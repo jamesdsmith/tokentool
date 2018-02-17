@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	var border = document.getElementById('border');
 	var mask = document.getElementById('mask');
 	var image = document.getElementById('image');
+
+    var preview = document.getElementById('preview');
+	var prevctx = preview.getContext('2d');
 	
 	var mouseDown = false;
 	var mouseX = 0;
@@ -19,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	window.addEventListener('load', resizeCanvas);
 	window.addEventListener('mousemove', onMouseMove);
 	canvas.addEventListener('mousedown', onMouseDown);
-	canvas.addEventListener('mouseup', onMouseUp);
+	window.addEventListener('mouseup', onMouseUp);
 
     function resizeCanvas() {
 		canvas.width = window.innerWidth;
@@ -31,6 +34,8 @@ document.addEventListener('DOMContentLoaded', function(){
 		mouseDown = true;
 		mouseX = e.pageX;
 		mouseY = e.pageY;
+		e = e || window.event;
+		pauseEvent(e);
 	}
 
 	function onMouseUp(e) {
@@ -46,7 +51,17 @@ document.addEventListener('DOMContentLoaded', function(){
 			imX += deltaX;
 			imY += deltaY;
 			drawStuff();
+			e = e || window.event;
+			pauseEvent(e);
 		}
+	}
+
+	function pauseEvent(e){
+		if(e.stopPropagation) e.stopPropagation();
+		if(e.preventDefault) e.preventDefault();
+		e.cancelBubble=true;
+		e.returnValue=false;
+		return false;
 	}
 
     function drawStuff() {
@@ -68,5 +83,10 @@ document.addEventListener('DOMContentLoaded', function(){
 		//context.globalCompositeOperation = 'source-over';
 		context.drawImage(border, w/2 - brw/2, h/2 - brh/2, brw, brh);
 		//context.stroke();
+
+		prevctx.clearRect(0, 0, preview.width, preview.height);
+		prevctx.rect(0, 0, preview.width, preview.height);
+		prevctx.fillStyle = "black";
+		prevctx.fill()
     }
 });
