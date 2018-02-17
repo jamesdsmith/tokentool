@@ -1,20 +1,76 @@
+* { 
+	margin: 0;
+	padding: 0;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+canvas {
+	display:block;
+}
+
 #wrapper {
     position: relative;
 }
 
 .menu {
     position: absolute;
-    width: 100px;
-    height: 300px;
-    border-radius: 8px;
+	padding: 10px;
+    border-radius: 0px;
     background-color: #eee;
     border: 2px solid #ccc;
     top: 10px;
     left: 10px;
 }
 
-* { margin:0; padding:0; } /* to remove the top and left whitespace */
+.button {
+  display: inline-block;
+  padding: 10px 12px;
+  font-size: 12pt;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px #999;
+  margin-bottom: 10px;
+}
 
-html, body { width:100%; height:100%; } /* just to be sure these are full screen*/
+.button:hover {
+	background-color: #3e8e41
+}
 
-canvas { display:block; } /* To remove the scrollbars */
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 2px #666;
+  transform: translateY(2px);
+}
+
+.upload, .save {
+	display: block;
+	width: 20px;
+	height: 20px;
+	background-repeat: no-repeat;
+}
+
+.upload {
+	background-image: url("upload.svg");
+}
+
+.save {
+	background-image: url("disk.svg");
+}
+
+/* #upload { */
+/* 	background-image: url("upload.svg"); */
+/* 	background-repeat: no-repeat; */
+/* 	width: 40px; */
+/* 	height: 40px */
+/* } */
+
