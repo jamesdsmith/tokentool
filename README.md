@@ -1,5 +1,5 @@
 # tokentool
-Web app for creating battle map tokens. This proejcted started as a web based re-write of this tool: http://www.rptools.net/toolbox/token-tool/
+Web app for creating battle map tokens. This proejcted started as a web based re-write of this tool: http://www.rptools.net/toolbox/token-tool/. The RPTools utility is very good, but crashes on macOS, and I would like to explore adding some additional useful features.
 
 ## TODO
 * Add menu with controls for:
@@ -17,4 +17,5 @@ Web app for creating battle map tokens. This proejcted started as a web based re
 * Allow users to load their own frames
 * Possible other features:
   * Have some base frames and a color picker to adjust them
+    * Auto-calculate frame color based on token image average value?
   * Procedural generation of frames
