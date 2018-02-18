@@ -115,8 +115,10 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 
 	function loadUrl() {
-		image.src = urlText.value;
-		hideFileDialog();
+		if (urlText.value != "") {
+			image.src = urlText.value;
+			hideFileDialog();
+		}
 	}
 
 	function chooseFile(e) {
