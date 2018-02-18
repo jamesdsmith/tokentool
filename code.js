@@ -5,9 +5,14 @@ document.addEventListener('DOMContentLoaded', function(){
 	var mask = document.getElementById('mask');
 	var image = document.getElementById('image');
 	var solidBg = document.getElementById('solidBackground');
+	var transparency = document.getElementById('transparency');
 
     var preview = document.getElementById('preview');
 	var prevctx = preview.getContext('2d');
+	var offscreen = document.createElement('canvas');
+	offscreen.width = preview.width;
+	offscreen.height = preview.height;
+	var offscreenCtx = offscreen.getContext('2d');
 	
 	var mouseDown = false;
 	var mouseX = 0;
@@ -24,13 +29,14 @@ document.addEventListener('DOMContentLoaded', function(){
 	window.addEventListener('mousemove', onMouseMove);
 	canvas.addEventListener('mousedown', onMouseDown);
 	window.addEventListener('mouseup', onMouseUp);
-	solidBg.addEventListener('change', drawStuff);
+	solidBg.addEventListener('change', render);
+	transparency.addEventListener('input', render);
 	document.getElementById('scaleUp').addEventListener('click', scaleUp);
 	document.getElementById('scaleDown').addEventListener('click', scaleDown);
 
 	function scaleUp() {
 		imscale += 0.1;
-		drawStuff();
+		render();
 	}
 
 	function scaleDown() {
@@ -38,13 +44,13 @@ document.addEventListener('DOMContentLoaded', function(){
 		if (imscale < 0) {
 			imscale = 0;
 		}
-		drawStuff();
+		render();
 	}
 
     function resizeCanvas() {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
-		drawStuff(); 
+		render(); 
     }
 
 	function onMouseDown(e) {
@@ -67,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			mouseY = e.pageY;
 			imX += deltaX;
 			imY += deltaY;
-			drawStuff();
+			render();
 			e = e || window.event;
 			pauseEvent(e);
 		}
@@ -81,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		return false;
 	}
 
-    function drawStuff() {
+    function render() {
 		var w = canvas.width;
 		var h = canvas.height;
 		var brw = border.width;
@@ -95,19 +101,24 @@ document.addEventListener('DOMContentLoaded', function(){
 		context.drawImage(border, w/2 - brw/2, h/2 - brh/2, brw, brh);
 		//context.stroke();
 
-		// Draw preview frame
+		// Initially draw preview to an offscreen canvas
 		w = preview.width;
 		h = preview.height;
 		ps = w / brw
-		prevctx.clearRect(0, 0, w, h);
-		prevctx.drawImage(mask, 0, 0, w, h);
-		prevctx.globalCompositeOperation = 'source-in';
-		prevctx.drawImage(image, w/2 - imw*ps/2 + imX*ps, h/2 - imh*ps/2 + imY*ps, imw*ps, imh*ps);
+		offscreenCtx.clearRect(0, 0, w, h);
+		offscreenCtx.drawImage(mask, 0, 0, w, h);
+		offscreenCtx.globalCompositeOperation = 'source-in';
+		offscreenCtx.drawImage(image, w/2 - imw*ps/2 + imX*ps, h/2 - imh*ps/2 + imY*ps, imw*ps, imh*ps);
 		if (solidBg.checked) {
-			prevctx.globalCompositeOperation = 'destination-over';
-			prevctx.drawImage(mask, 0, 0, w, h);
+			offscreenCtx.globalCompositeOperation = 'destination-over';
+			offscreenCtx.drawImage(mask, 0, 0, w, h);
 		}
-		prevctx.globalCompositeOperation = 'source-over';
-		prevctx.drawImage(border, 0, 0, w, h);
+		offscreenCtx.globalCompositeOperation = 'source-over';
+		offscreenCtx.drawImage(border, 0, 0, w, h);
+
+		// Draw the preview frame
+		prevctx.clearRect(0, 0, w, h);
+		prevctx.globalAlpha = transparency.value / 100;
+		prevctx.drawImage(offscreen, 0, 0);
     }
 });
