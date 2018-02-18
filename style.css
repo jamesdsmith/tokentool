@@ -31,6 +31,10 @@ canvas {
 	text-align: center;
 }
 
+.dropArea.is-dragover {
+	border-color: grey;
+}
+
 .cloudIcon {
 	margin-bottom: 10px;
 }

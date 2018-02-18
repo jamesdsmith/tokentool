@@ -68,12 +68,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			// Use DataTransferItemList interface to access the file(s)
 			for (var i=0; i < dt.items.length; i++) {
 				if (dt.items[i].kind == "file") {
-					var f = dt.items[i].getAsFile();
-					var r = new FileReader();
-					r.onload = function() {
-						image.src = r.result;
-					};
-					r.readAsDataURL(f);
+					readImageFile(dt.items[i].getAsFile());
 				}
 			}
 		} else {
@@ -83,10 +78,31 @@ document.addEventListener('DOMContentLoaded', function(){
 			}  
 		}
 		hideFileDialog();
+		fileHoverEnd(e);
 	});
 	uploadBg.addEventListener('dragover', function(e) {
 		e.preventDefault();
+		fileHoverStart(e);
 	});
+	uploadBg.addEventListener('dragenter', fileHoverStart);
+	uploadBg.addEventListener('dragleave', fileHoverEnd);
+	uploadBg.addEventListener('dragend', fileHoverEnd);
+
+	function fileHoverStart(e) {
+		dropArea.classList.add('is-dragover');
+	}
+
+	function fileHoverEnd(e) {
+		dropArea.classList.remove('is-dragover');
+	}
+	
+	function readImageFile(f) {
+		var r = new FileReader();
+		r.onload = function() {
+			image.src = r.result;
+		};
+		r.readAsDataURL(f);
+	}
 
 	function showFileDialog() {
 		uploadBg.hidden = false;
@@ -106,11 +122,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	function chooseFile(e) {
 		var tgt = e.target || window.event.srcElement, files = tgt.files;
 		if (FileReader && files && files.length) {
-			var r = new FileReader();
-			r.onload = function () {
-				image.src = r.result;
-			}
-			r.readAsDataURL(files[0]);
+			readImageFile(files[0]);
 		}
 		else {
 			// TODO: Fill in error handling here
