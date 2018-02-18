@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function(){
-    var canvas = document.getElementById('canvas');
+	var canvas = document.getElementById('canvas');
 	var context = canvas.getContext('2d');
 	var border = document.getElementById('border');
 	var mask = document.getElementById('mask');
@@ -17,13 +17,13 @@ document.addEventListener('DOMContentLoaded', function(){
 	var urlText = document.getElementById('urlText');
 	var dropArea = document.getElementById('dropArea');
 
-    var preview = document.getElementById('preview');
+	var preview = document.getElementById('preview');
 	var prevctx = preview.getContext('2d');
 	var offscreen = document.createElement('canvas');
-	offscreen.width = preview.width;
-	offscreen.height = preview.height;
+	offscreen.width = tokenWidth.value;
+	offscreen.height = tokenHeight.value;
 	var offscreenCtx = offscreen.getContext('2d');
-	
+
 	var mouseDown = false;
 	var mouseX = 0;
 	var mouseY = 0;
@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	var scaleX = 1.0;
 	var scaleY = 1.0;
 
-    // resize the canvas to fill browser window dynamically
-    window.addEventListener('resize', resizeCanvas);
+	// resize the canvas to fill browser window dynamically
+	window.addEventListener('resize', resizeCanvas);
 	window.addEventListener('load', resizeCanvas);
 	window.addEventListener('mousemove', onMouseMove);
 	canvas.addEventListener('mousedown', onMouseDown);
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	function fileHoverEnd(e) {
 		dropArea.classList.remove('is-dragover');
 	}
-	
+
 	function readImageFile(f) {
 		var r = new FileReader();
 		r.onload = function() {
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	function saveImg() {
 		var a = document.createElement('a');
-		var img = preview.toDataURL("image/png");
+		var img = offscreen.toDataURL("image/png");
 		a.download = "token.png";
 		a.href = img;
 		document.body.appendChild(a);
@@ -155,16 +155,22 @@ document.addEventListener('DOMContentLoaded', function(){
 	function sizeChange() {
 		tokenWidth.value = sizeSelect.value;
 		tokenHeight.value = sizeSelect.value;
+		offscreen.width = tokenWidth.value;
+		offscreen.height = tokenHeight.value;
 		render();
 	}
 
 	function widthChange() {
 		tokenHeight.value = tokenWidth.value;
+		offscreen.width = tokenWidth.value;
+		offscreen.height = tokenHeight.value;
 		render();
 	}
 
 	function heightChange() {
 		tokenWidth.value = tokenHeight.value;
+		offscreen.width = tokenWidth.value;
+		offscreen.height = tokenHeight.value;
 		render();
 	}
 
@@ -181,11 +187,11 @@ document.addEventListener('DOMContentLoaded', function(){
 		render();
 	}
 
-    function resizeCanvas() {
+	function resizeCanvas() {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
 		render(); 
-    }
+	}
 
 	function onMouseDown(e) {
 		mouseDown = true;
@@ -221,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		return false;
 	}
 
-    function render() {
+	function render() {
 		var w = canvas.width;
 		var h = canvas.height;
 		scaleX = tokenWidth.value / border.width;
@@ -238,8 +244,8 @@ document.addEventListener('DOMContentLoaded', function(){
 		context.drawImage(border, w/2 - brw/2, h/2 - brh/2, brw, brh);
 
 		// Initially draw preview to an offscreen canvas
-		w = preview.width;
-		h = preview.height;
+		w = tokenWidth.value;
+		h = tokenHeight.value;
 		ps = w / brw;
 		offscreenCtx.clearRect(0, 0, w, h);
 		offscreenCtx.drawImage(mask, 0, 0, w, h);
@@ -255,6 +261,6 @@ document.addEventListener('DOMContentLoaded', function(){
 		// Draw the preview frame
 		prevctx.clearRect(0, 0, w, h);
 		prevctx.globalAlpha = transparency.value / 100;
-		prevctx.drawImage(offscreen, 0, 0);
-    }
+		prevctx.drawImage(offscreen, 0, 0, preview.width, preview.height);
+	}
 });

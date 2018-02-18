@@ -12,6 +12,10 @@ canvas {
 	display:block;
 }
 
+.mainCanvas {
+	background-color: #444;
+}
+
 .preview {
 	background: url("checker.png");
 	width: 160px;
@@ -50,7 +54,7 @@ canvas {
 
 .uploadDialog {
 	position: absolute;
-	background-color: #222222;
+	background-color: #444444;
 	color: white;
 	width: 400px;
 	top: 50%;
