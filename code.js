@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	var tokenWidth = document.getElementById('tokenWidth');
 	var tokenHeight = document.getElementById('tokenHeight');
 	var sizeSelect = document.getElementById('sizeSelect');
+	var saveBtn = document.getElementById('save');
 
     var preview = document.getElementById('preview');
 	var prevctx = preview.getContext('2d');
@@ -41,6 +42,17 @@ document.addEventListener('DOMContentLoaded', function(){
 	tokenWidth.addEventListener('input', widthChange);
 	tokenHeight.addEventListener('input', heightChange);
 	sizeSelect.addEventListener('change', sizeChange);
+	saveBtn.addEventListener('click', saveImg);
+
+	function saveImg() {
+		var a = document.createElement('a');
+		var img = preview.toDataURL("image/png");
+		a.download = "token.png";
+		a.href = img;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+	}
 
 	function sizeChange() {
 		tokenWidth.value = sizeSelect.value;
