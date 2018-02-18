@@ -15,7 +15,7 @@
 					<canvas id="preview" width="160" height="160">
 					</canvas>
 				</div>
-				<select>
+				<select id="sizeSelect">
 					<option value="256">256 x 256</option>
 					<option value="200">200 x 200</option>
 					<option value="160">160 x 160</option>
@@ -23,8 +23,8 @@
 					<option value="80">80 x 80</option>
 					<option value="64">64 x 64</option>
 				</select>
-				<p>Width: <input type="number" value="256" /></p>
-				<p>Height: <input type="number" value="256" /></p>
+				<p><label>Width: <input type="number" id="tokenWidth" value="256" /></label></p>
+				<p><label>Height: <input type="number" id="tokenHeight" value="256" /></label></p>
 				<p><label><input type="checkbox" id="solidBackground" checked /> Solid Background</label></p>
 				<p>Transparency: <input type="range" id="transparency" min="0" max="100" value="100" /></p>
 				<p>Zoom: <button id="scaleUp">+</button><button id="scaleDown">-</button></p>

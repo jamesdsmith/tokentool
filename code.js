@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	var image = document.getElementById('image');
 	var solidBg = document.getElementById('solidBackground');
 	var transparency = document.getElementById('transparency');
+	var tokenWidth = document.getElementById('tokenWidth');
+	var tokenHeight = document.getElementById('tokenHeight');
+	var sizeSelect = document.getElementById('sizeSelect');
 
     var preview = document.getElementById('preview');
 	var prevctx = preview.getContext('2d');
@@ -22,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	var imY = 0;
 
 	var imscale = 1.0;
+	var scaleX = 1.0;
+	var scaleY = 1.0;
 
     // resize the canvas to fill browser window dynamically
     window.addEventListener('resize', resizeCanvas);
@@ -33,6 +38,25 @@ document.addEventListener('DOMContentLoaded', function(){
 	transparency.addEventListener('input', render);
 	document.getElementById('scaleUp').addEventListener('click', scaleUp);
 	document.getElementById('scaleDown').addEventListener('click', scaleDown);
+	tokenWidth.addEventListener('input', widthChange);
+	tokenHeight.addEventListener('input', heightChange);
+	sizeSelect.addEventListener('change', sizeChange);
+
+	function sizeChange() {
+		tokenWidth.value = sizeSelect.value;
+		tokenHeight.value = sizeSelect.value;
+		render();
+	}
+
+	function widthChange() {
+		tokenHeight.value = tokenWidth.value;
+		render();
+	}
+
+	function heightChange() {
+		tokenWidth.value = tokenHeight.value;
+		render();
+	}
 
 	function scaleUp() {
 		imscale += 0.1;
@@ -90,21 +114,23 @@ document.addEventListener('DOMContentLoaded', function(){
     function render() {
 		var w = canvas.width;
 		var h = canvas.height;
-		var brw = border.width;
-		var brh = border.height;
+		scaleX = tokenWidth.value / border.width;
+		scaleY = tokenHeight.value / border.height;
+		var brw = border.width * scaleX;
+		var brh = border.height * scaleY;
 		var imw = image.width*imscale;
 		var imh = image.height*imscale;
 
+
+		// Draw the main canvas
 		context.clearRect(0, 0, canvas.width, canvas.height);
-		//context.beginPath();
 		context.drawImage(image, w/2 - imw/2 + imX, h/2 - imh/2 + imY, imw, imh);
 		context.drawImage(border, w/2 - brw/2, h/2 - brh/2, brw, brh);
-		//context.stroke();
 
 		// Initially draw preview to an offscreen canvas
 		w = preview.width;
 		h = preview.height;
-		ps = w / brw
+		ps = w / brw;
 		offscreenCtx.clearRect(0, 0, w, h);
 		offscreenCtx.drawImage(mask, 0, 0, w, h);
 		offscreenCtx.globalCompositeOperation = 'source-in';
