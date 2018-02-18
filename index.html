@@ -6,13 +6,13 @@
 		<script type="text/javascript" src="code.js"></script>
 	</head>
 	<body>
-		<div id="wrapper">
+		<div id="main">
 			<canvas id="canvas">
 			</canvas>
 
 			<div class="menu">
-				<button class="button" id="upload"><i class="upload"></i></button>
-				<button class="button" id="save"><i class="save"></i></button>
+				<button class="button" id="uploadBtn"><i class="upload"></i></button>
+				<button class="button" id="saveBtn"><i class="save"></i></button>
 				<div class="preview">
 					<canvas id="preview" width="160" height="160">
 					</canvas>
@@ -35,6 +35,15 @@
 				<img id="border" src="border.png" />
 				<img id="mask" src="border-mask.png" />
 				<img id="image" src="brett.png" />
+			</div>
+		</div>
+		<div id="uploadBg" hidden>
+			<div class="uploadDialog">
+				<div class="dropArea">
+					<object type="image/svg+xml" data="cloud_upload.svg" class="cloudIcon"></object>
+				</div>
+				<input type="file" class="button" id="fileField">Upload a file</button>
+				<p><input type="text" /><button class="button">Load</button></p>
 			</div>
 		</div>
 	</body>

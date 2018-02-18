@@ -9,7 +9,11 @@ document.addEventListener('DOMContentLoaded', function(){
 	var tokenWidth = document.getElementById('tokenWidth');
 	var tokenHeight = document.getElementById('tokenHeight');
 	var sizeSelect = document.getElementById('sizeSelect');
-	var saveBtn = document.getElementById('save');
+	var uploadBtn = document.getElementById('uploadBtn');
+	var saveBtn = document.getElementById('saveBtn');
+	var uploadBg = document.getElementById('uploadBg');
+	var uploadDialog = document.getElementById('uploadDialog');
+	var fileField = document.getElementById('fileField');
 
     var preview = document.getElementById('preview');
 	var prevctx = preview.getContext('2d');
@@ -43,6 +47,46 @@ document.addEventListener('DOMContentLoaded', function(){
 	tokenHeight.addEventListener('input', heightChange);
 	sizeSelect.addEventListener('change', sizeChange);
 	saveBtn.addEventListener('click', saveImg);
+	uploadBtn.addEventListener('click', uploadImg);
+	uploadBg.addEventListener('click', clickUploadBg);
+	fileField.addEventListener('change', chooseFile);
+
+	function chooseFile(e) {
+		var tgt = e.target || window.event.srcElement,
+			files = tgt.files;
+
+		// FileReader support
+		if (FileReader && files && files.length) {
+			var fr = new FileReader();
+			fr.onload = function () {
+				image.src = fr.result;
+			}
+			fr.readAsDataURL(files[0]);
+		}
+
+		// Not supported
+		else {
+			// fallback -- perhaps submit the input to an iframe and temporarily store
+			// them on the server until the user's session ends.
+		}
+		render();
+		uploadBg.hidden = true;
+	}
+
+	function eatClick(e) {
+		pauseEvent(e);
+	}
+
+	function clickUploadBg(e) {
+		if (e.target == this) {
+			uploadBg.hidden = true;
+			render();
+		}
+	}
+
+	function uploadImg() {
+		uploadBg.hidden = false;
+	}
 
 	function saveImg() {
 		var a = document.createElement('a');
