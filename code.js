@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	var uploadDialog = document.getElementById('uploadDialog');
 	var fileField = document.getElementById('fileField');
 	var urlText = document.getElementById('urlText');
+	var dropArea = document.getElementById('dropArea');
 
     var preview = document.getElementById('preview');
 	var prevctx = preview.getContext('2d');
@@ -53,6 +54,39 @@ document.addEventListener('DOMContentLoaded', function(){
 	fileField.addEventListener('change', chooseFile);
 	image.addEventListener('load', render);
 	document.getElementById('loadUrlBtn').addEventListener('click', loadUrl);
+	urlText.addEventListener('keyup', function(e) {
+		e.preventDefault();
+		if (e.keyCode == 13) {
+			document.getElementById('loadUrlBtn').click();
+		}
+	})
+	uploadBg.addEventListener('drop', function(e) {
+		e.preventDefault();
+		// If dropped items aren't files, reject them
+		var dt = e.dataTransfer;
+		if (dt.items) {
+			// Use DataTransferItemList interface to access the file(s)
+			for (var i=0; i < dt.items.length; i++) {
+				if (dt.items[i].kind == "file") {
+					var f = dt.items[i].getAsFile();
+					var r = new FileReader();
+					r.onload = function() {
+						image.src = r.result;
+					};
+					r.readAsDataURL(f);
+				}
+			}
+		} else {
+			// Use DataTransfer interface to access the file(s)
+			for (var i=0; i < dt.files.length; i++) {
+				image.src = dt.files[i].name;
+			}  
+		}
+		hideFileDialog();
+	});
+	uploadBg.addEventListener('dragover', function(e) {
+		e.preventDefault();
+	});
 
 	function showFileDialog() {
 		uploadBg.hidden = false;
@@ -72,11 +106,11 @@ document.addEventListener('DOMContentLoaded', function(){
 	function chooseFile(e) {
 		var tgt = e.target || window.event.srcElement, files = tgt.files;
 		if (FileReader && files && files.length) {
-			var fr = new FileReader();
-			fr.onload = function () {
-				image.src = fr.result;
+			var r = new FileReader();
+			r.onload = function () {
+				image.src = r.result;
 			}
-			fr.readAsDataURL(files[0]);
+			r.readAsDataURL(files[0]);
 		}
 		else {
 			// TODO: Fill in error handling here

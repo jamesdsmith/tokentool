@@ -39,11 +39,14 @@
 		</div>
 		<div id="uploadBg" hidden>
 			<div class="uploadDialog">
-				<div class="dropArea">
+				<div class="dropArea" id="dropArea">
 					<object type="image/svg+xml" data="cloud_upload.svg" class="cloudIcon"></object>
+					<p>
+						<input type="file" id="fileField" class="inputFile" />
+						<label for="fileField" class="button">Choose a file</label> or drag it here.
+					</p>
 				</div>
-				<input type="file" class="button" id="fileField">Upload a file</button>
-				<p><input type="text" id="urlText" /><button class="button" id="loadUrlBtn">Load</button></p>
+				<p><input type="text" id="urlText" /><button class="button" id="loadUrlBtn">Load from URL</button></p>
 			</div>
 		</div>
 	</body>
