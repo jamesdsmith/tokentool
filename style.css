@@ -12,6 +12,12 @@ canvas {
 	display:block;
 }
 
+.preview {
+	background: url("checker.png");
+	width: 160px;
+	height: 160px;
+}
+
 #wrapper {
     position: relative;
 }

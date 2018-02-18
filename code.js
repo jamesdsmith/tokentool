@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	var border = document.getElementById('border');
 	var mask = document.getElementById('mask');
 	var image = document.getElementById('image');
+	var solidBg = document.getElementById('solidBackground');
 
     var preview = document.getElementById('preview');
 	var prevctx = preview.getContext('2d');
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	window.addEventListener('mousemove', onMouseMove);
 	canvas.addEventListener('mousedown', onMouseDown);
 	window.addEventListener('mouseup', onMouseUp);
+	solidBg.addEventListener('change', resizeCanvas);
 
     function resizeCanvas() {
 		canvas.width = window.innerWidth;
@@ -65,9 +67,6 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 
     function drawStuff() {
-		// do your drawing stuff here
-		context.clearRect(0, 0, canvas.width, canvas.height);
-
 		var w = canvas.width;
 		var h = canvas.height;
 		var brw = border.width;
@@ -75,18 +74,25 @@ document.addEventListener('DOMContentLoaded', function(){
 		var imw = image.width*imscale;
 		var imh = image.height*imscale;
 
-		var gco = context.globalContextOperation
+		context.clearRect(0, 0, canvas.width, canvas.height);
 		//context.beginPath();
-		//context.drawImage(mask, w/2 - brw/2, h/2 - brh/2, mask.width, mask.height);
-		//context.globalCompositeOperation = 'source-in';
 		context.drawImage(image, w/2 - imw/2 + imX, h/2 - imh/2 + imY, imw, imh);
-		//context.globalCompositeOperation = 'source-over';
 		context.drawImage(border, w/2 - brw/2, h/2 - brh/2, brw, brh);
 		//context.stroke();
 
-		prevctx.clearRect(0, 0, preview.width, preview.height);
-		prevctx.rect(0, 0, preview.width, preview.height);
-		prevctx.fillStyle = "black";
-		prevctx.fill()
+		// Draw preview frame
+		w = preview.width;
+		h = preview.height;
+		ps = w / brw
+		prevctx.clearRect(0, 0, w, h);
+		prevctx.drawImage(mask, 0, 0, w, h);
+		prevctx.globalCompositeOperation = 'source-in';
+		prevctx.drawImage(image, w/2 - imw*ps/2 + imX*ps, h/2 - imh*ps/2 + imY*ps, imw*ps, imh*ps);
+		if (solidBg.checked) {
+			prevctx.globalCompositeOperation = 'destination-over';
+			prevctx.drawImage(mask, 0, 0, w, h);
+		}
+		prevctx.globalCompositeOperation = 'source-over';
+		prevctx.drawImage(border, 0, 0, w, h);
     }
 });
