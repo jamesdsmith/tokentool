@@ -24,7 +24,22 @@ document.addEventListener('DOMContentLoaded', function(){
 	window.addEventListener('mousemove', onMouseMove);
 	canvas.addEventListener('mousedown', onMouseDown);
 	window.addEventListener('mouseup', onMouseUp);
-	solidBg.addEventListener('change', resizeCanvas);
+	solidBg.addEventListener('change', drawStuff);
+	document.getElementById('scaleUp').addEventListener('click', scaleUp);
+	document.getElementById('scaleDown').addEventListener('click', scaleDown);
+
+	function scaleUp() {
+		imscale += 0.1;
+		drawStuff();
+	}
+
+	function scaleDown() {
+		imscale -= 0.1;
+		if (imscale < 0) {
+			imscale = 0;
+		}
+		drawStuff();
+	}
 
     function resizeCanvas() {
 		canvas.width = window.innerWidth;
