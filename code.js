@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	var uploadBg = document.getElementById('uploadBg');
 	var uploadDialog = document.getElementById('uploadDialog');
 	var fileField = document.getElementById('fileField');
+	var urlText = document.getElementById('urlText');
 
     var preview = document.getElementById('preview');
 	var prevctx = preview.getContext('2d');
@@ -50,12 +51,26 @@ document.addEventListener('DOMContentLoaded', function(){
 	uploadBtn.addEventListener('click', uploadImg);
 	uploadBg.addEventListener('click', clickUploadBg);
 	fileField.addEventListener('change', chooseFile);
+	image.addEventListener('load', render);
+	document.getElementById('loadUrlBtn').addEventListener('click', loadUrl);
+
+	function showFileDialog() {
+		uploadBg.hidden = false;
+	}
+
+	function hideFileDialog() {
+		uploadBg.hidden = true;
+		fileField.value = ""
+		urlText.value = ""
+	}
+
+	function loadUrl() {
+		image.src = urlText.value;
+		hideFileDialog();
+	}
 
 	function chooseFile(e) {
-		var tgt = e.target || window.event.srcElement,
-			files = tgt.files;
-
-		// FileReader support
+		var tgt = e.target || window.event.srcElement, files = tgt.files;
 		if (FileReader && files && files.length) {
 			var fr = new FileReader();
 			fr.onload = function () {
@@ -63,29 +78,22 @@ document.addEventListener('DOMContentLoaded', function(){
 			}
 			fr.readAsDataURL(files[0]);
 		}
-
-		// Not supported
 		else {
+			// TODO: Fill in error handling here
 			// fallback -- perhaps submit the input to an iframe and temporarily store
 			// them on the server until the user's session ends.
 		}
-		render();
-		uploadBg.hidden = true;
-	}
-
-	function eatClick(e) {
-		pauseEvent(e);
+		hideFileDialog();
 	}
 
 	function clickUploadBg(e) {
 		if (e.target == this) {
-			uploadBg.hidden = true;
-			render();
+			hideFileDialog();
 		}
 	}
 
 	function uploadImg() {
-		uploadBg.hidden = false;
+		showFileDialog();
 	}
 
 	function saveImg() {
