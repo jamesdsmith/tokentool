@@ -3,9 +3,15 @@
 	<head>
 		<title>TokenTool v0.1</title>
 		<link rel="stylesheet" href="style.css" />
+		<script type="text/javascript" src="jscolor.min.js"></script>
 		<script type="text/javascript" src="code.js"></script>
 	</head>
 	<body>
+		<div style="display:none;">
+			<img id="border" src="images/frame-round-thick-sharp.png" />
+			<img id="mask" src="images/mask-round.png" />
+			<img id="image" src="images/brett.png" />
+		</div>
 		<div id="main">
 			<canvas id="canvas" class="mainCanvas">
 			</canvas>
@@ -17,6 +23,13 @@
 					<canvas id="preview" width="160" height="160">
 					</canvas>
 				</div>
+				<div class="dropdown">
+				  <button id="dropbtn" class="dropbtn"><img src="images/frame-round-thick-sharp.png" id="dropimg" /><div class="arrow-down"></div></button>
+				  <div id="dropdown-content" class="dropdown-content">
+				  </div>
+				</div>
+				<input class="jscolor" id="frameColor" value="ffffff">
+				<br/>
 				<select id="sizeSelect">
 					<option value="256">256 x 256</option>
 					<option value="200">200 x 200</option>
@@ -27,20 +40,18 @@
 				</select>
 				<p><label>Width: <input type="number" id="tokenWidth" value="256" /></label></p>
 				<p><label>Height: <input type="number" id="tokenHeight" value="256" /></label></p>
-				<p><label><input type="checkbox" id="solidBackground" checked /> Solid Background</label></p>
+				<p>
+					<label><input type="checkbox" id="solidBackground" checked /> Solid Background</label>
+					<input class="jscolor" id="bgColor" value="ffffff">
+				</p>
 				<p>Transparency: <input type="range" id="transparency" min="0" max="100" value="100" /></p>
-				<p>Zoom: <button id="scaleUp">+</button><button id="scaleDown">-</button></p>
-			</div>
-			<div style="display:none;">
-				<img id="border" src="border.png" />
-				<img id="mask" src="border-mask.png" />
-				<img id="image" src="brett.png" />
+				<p>Zoom: <button id="scaleDown" class="button">-</button> <button id="scaleUp" class="button">+</button></p>
 			</div>
 		</div>
 		<div id="uploadBg" hidden>
 			<div class="uploadDialog">
 				<div class="dropArea" id="dropArea">
-					<object type="image/svg+xml" data="cloud_upload.svg" class="cloudIcon"></object>
+					<object type="image/svg+xml" data="icons/cloud_upload.svg" class="cloudIcon"></object>
 					<p>
 						<input type="file" id="fileField" class="inputFile" />
 						<label for="fileField" class="button">Choose a file</label> or drag it here.

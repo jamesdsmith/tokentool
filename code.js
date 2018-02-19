@@ -1,4 +1,42 @@
 document.addEventListener('DOMContentLoaded', function(){
+	var frameData = {
+		"frame-round-thick-flat": {
+			"filename": "frame-round-thick-flat.png",
+			"maskname": "mask-round.png"
+		},
+		"frame-round-thick-sharp": {
+			"filename": "frame-round-thick-sharp.png",
+			"maskname": "mask-round.png"
+		},
+		"frame-round-thick-soft": {
+			"filename": "frame-round-thick-soft.png",
+			"maskname": "mask-round.png"
+		},
+		"frame-round-thin-flat": {
+			"filename": "frame-round-thin-flat.png",
+			"maskname": "mask-round.png"
+		},
+		"frame-round-thin-sharp": {
+			"filename": "frame-round-thin-sharp.png",
+			"maskname": "mask-round.png"
+		},
+		"frame-round-thin-soft": {
+			"filename": "frame-round-thin-soft.png",
+			"maskname": "mask-round.png"
+		},
+		"frame-square-thick-flat": {
+			"filename": "frame-square-thick-flat.png",
+			"maskname": "mask-square.png"
+		},
+		"frame-square-thick-sharp": {
+			"filename": "frame-square-thick-sharp.png",
+			"maskname": "mask-square.png"
+		},
+		"frame-square-thick-soft": {
+			"filename": "frame-square-thick-soft.png",
+			"maskname": "mask-square.png"
+		},
+	};
 	var canvas = document.getElementById('canvas');
 	var context = canvas.getContext('2d');
 	var border = document.getElementById('border');
@@ -16,6 +54,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	var fileField = document.getElementById('fileField');
 	var urlText = document.getElementById('urlText');
 	var dropArea = document.getElementById('dropArea');
+	var frameColor = document.getElementById('frameColor');
+	var bgColor = document.getElementById('bgColor');
+	var dropdownContent = document.getElementById('dropdown-content');
 
 	var preview = document.getElementById('preview');
 	var prevctx = preview.getContext('2d');
@@ -23,6 +64,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	offscreen.width = tokenWidth.value;
 	offscreen.height = tokenHeight.value;
 	var offscreenCtx = offscreen.getContext('2d');
+	
+	var finalFrame = document.createElement('canvas');
+	var finalFrameColor = "rgb(255, 255, 255)"
 
 	var mouseDown = false;
 	var mouseX = 0;
@@ -34,6 +78,15 @@ document.addEventListener('DOMContentLoaded', function(){
 	var imscale = 1.0;
 	var scaleX = 1.0;
 	var scaleY = 1.0;
+
+	var keys = Object.keys(frameData);
+	for (var i = 0; i < keys.length; i++) {
+		var im = document.createElement('img');
+		im.src = "images/" + frameData[keys[i]].filename;
+		dropdownContent.appendChild(im);
+	}
+	// <img src="images/frame-round-thick-sharp.png" />
+	// <img src="images/frame-round-thin-soft.png" />
 
 	// resize the canvas to fill browser window dynamically
 	window.addEventListener('resize', resizeCanvas);
@@ -87,6 +140,49 @@ document.addEventListener('DOMContentLoaded', function(){
 	uploadBg.addEventListener('dragenter', fileHoverStart);
 	uploadBg.addEventListener('dragleave', fileHoverEnd);
 	uploadBg.addEventListener('dragend', fileHoverEnd);
+	document.getElementById('dropbtn').addEventListener('click', openMenu);
+	window.onclick = function(e) {
+		if (!e.target.matches('.dropbtn') && !e.target.matches('#dropimg')) {
+			document.getElementById("dropbtn").classList.remove("show");
+			var dropdowns = document.getElementsByClassName("dropdown-content");
+			var i;
+			for (i = 0; i < dropdowns.length; i++) {
+				var openDropdown = dropdowns[i];
+				if (openDropdown.classList.contains('show')) {
+					openDropdown.classList.remove('show');
+				}
+			}
+		}
+	}
+	var items = Array.from(document.getElementById("dropdown-content").children);
+	var i;
+	for (i = 0; i < items.length; i++) {
+		var item = items[i];
+		item.addEventListener('click', selectBorder);
+	}
+	border.addEventListener('load', updateFrame);
+	// console.log(frameColor.jscolor);
+	// document.getElementById("dropimg").addEventListener('click', openMenu);
+	// frameColor.addEventListener('fineChange', updateFrame);
+	frameColor.jscolor.onFineChange = function(jscolor) {
+		updateFrame();
+		render();
+	}
+	bgColor.jscolor.onFineChange = function(jscolor) {
+		render();
+	}
+
+	function openMenu() {
+		document.getElementById("dropbtn").classList.toggle("show");
+		document.getElementById("dropdown-content").classList.toggle("show");
+	}
+
+	function selectBorder(e) {
+		border.src = e.target.src;
+		document.getElementById("dropimg").src = e.target.src;
+		updateFrame();
+		render();
+	}
 
 	function fileHoverStart(e) {
 		dropArea.classList.add('is-dragover');
@@ -229,36 +325,55 @@ document.addEventListener('DOMContentLoaded', function(){
 		return false;
 	}
 
+	function updateFrame() {
+		finalFrame = document.createElement('canvas');
+		finalFrame.width = border.width;
+		finalFrame.height = border.height;
+		var ctx = finalFrame.getContext('2d');
+		ctx.rect(0, 0, border.width, border.height);
+		ctx.fillStyle = frameColor.jscolor.toHEXString();
+		ctx.fill();
+		ctx.globalCompositeOperation = "multiply";
+		ctx.drawImage(border, 0, 0, border.width, border.height);
+		ctx.globalCompositeOperation = "destination-in";
+		ctx.drawImage(border, 0, 0, border.width, border.height);
+		ctx.globalCompositeOperation = "source-over";
+	}
+
 	function render() {
 		var w = canvas.width;
 		var h = canvas.height;
-		scaleX = tokenWidth.value / border.width;
-		scaleY = tokenHeight.value / border.height;
-		var brw = border.width * scaleX;
-		var brh = border.height * scaleY;
+		scaleX = tokenWidth.value / finalFrame.width;
+		scaleY = tokenHeight.value / finalFrame.height;
+		var brw = finalFrame.width * scaleX;
+		var brh = finalFrame.height * scaleY;
 		var imw = image.width*imscale;
 		var imh = image.height*imscale;
-
 
 		// Draw the main canvas
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		context.drawImage(image, w/2 - imw/2 + imX, h/2 - imh/2 + imY, imw, imh);
-		context.drawImage(border, w/2 - brw/2, h/2 - brh/2, brw, brh);
+		context.drawImage(finalFrame, w/2 - brw/2, h/2 - brh/2, brw, brh);
 
 		// Initially draw preview to an offscreen canvas
 		w = tokenWidth.value;
 		h = tokenHeight.value;
 		ps = w / brw;
 		offscreenCtx.clearRect(0, 0, w, h);
-		offscreenCtx.drawImage(mask, 0, 0, w, h);
-		offscreenCtx.globalCompositeOperation = 'source-in';
-		offscreenCtx.drawImage(image, w/2 - imw*ps/2 + imX*ps, h/2 - imh*ps/2 + imY*ps, imw*ps, imh*ps);
 		if (solidBg.checked) {
-			offscreenCtx.globalCompositeOperation = 'destination-over';
+			offscreenCtx.fillStyle = bgColor.jscolor.toHEXString();
+			offscreenCtx.rect(0, 0, w, h);
+			offscreenCtx.fill();
+			offscreenCtx.globalCompositeOperation = 'destination-atop';
 			offscreenCtx.drawImage(mask, 0, 0, w, h);
 		}
 		offscreenCtx.globalCompositeOperation = 'source-over';
-		offscreenCtx.drawImage(border, 0, 0, w, h);
+		offscreenCtx.drawImage(image, w/2 - imw*ps/2 + imX*ps, h/2 - imh*ps/2 + imY*ps, imw*ps, imh*ps);
+		offscreenCtx.globalCompositeOperation = 'destination-in';
+		offscreenCtx.drawImage(mask, 0, 0, w, h);
+
+		offscreenCtx.globalCompositeOperation = 'source-over';
+		offscreenCtx.drawImage(finalFrame, 0, 0, w, h);
 
 		// Draw the preview frame
 		prevctx.clearRect(0, 0, w, h);
