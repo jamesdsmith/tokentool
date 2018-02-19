@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	uploadBg.addEventListener('dragend', fileHoverEnd);
 	document.getElementById('dropbtn').addEventListener('click', openMenu);
 	window.onclick = function(e) {
-		if (!e.target.matches('.dropbtn') && !e.target.matches('#dropimg')) {
+		if (!e.target.matches('.dropbtn') && !e.target.parentElement.matches('.dropbtn')) {
 			document.getElementById("dropbtn").classList.remove("show");
 			var dropdowns = document.getElementsByClassName("dropdown-content");
 			var i;

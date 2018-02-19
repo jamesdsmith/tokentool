@@ -167,14 +167,14 @@ canvas {
 
 /* Style The Dropdown Button */
 .dropbtn {
-    background-color: #4CAF50;
+    background-color: #FFF;
     color: white;
     padding: 8px;
     border: none;
     cursor: pointer;
 	border-radius: 8px;
 	outline: none;
-	/* min-width: 100px; */
+	min-width: 90px;
 }
 
 .dropbtn img {
@@ -188,7 +188,7 @@ canvas {
   height: 0; 
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 8px solid #000;
+  border-top: 8px solid #444;
   display: inline-block;
   margin-bottom: 19px;
   margin-left: 5px;
@@ -205,11 +205,11 @@ canvas {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 50px;
+    min-width: 90px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 	overflow-y: auto;
-	height: 100px;
+	height: 200px;
 }
 
 /* Links inside the dropdown */
@@ -232,7 +232,7 @@ canvas {
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
-    background-color: #3e8e41;
+    background-color: #dddddd;
 }
 
 .show {display:block;}
