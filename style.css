@@ -94,7 +94,7 @@ input {
 .button {
   display: inline-block;
   padding: 10px 12px;
-  font-size: 12pt;
+  font-size: 10pt;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
@@ -103,7 +103,6 @@ input {
   background-color: #4CAF50;
   border: none;
   border-radius: 10px;
-  /* box-shadow: 0 4px #999; */
   margin-bottom: 10px;
 }
 
@@ -150,37 +149,14 @@ input {
   outline: none;
   border: none;
   padding: 10px 12px;
-  font-size: 12pt;
+  font-size: 10pt;
   border-radius: 10px 0px 0px 10px;
-  /* box-shadow: 0 4px #999; */
   margin-bottom: 15px;
   width: 220px;
 }
 
 .urlBtn {
-  display: inline-block;
-  padding: 10px 12px;
-  font-size: 12pt;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  outline: none;
-  color: #fff;
-  background-color: #4CAF50;
-  border: none;
   border-radius: 0px 10px 10px 0px;
-  /* box-shadow: 0 4px #999; */
-  margin-bottom: 15px;
-}
-
-.urlBtn:hover {
-	background-color: #3e8e41
-}
-
-.urlBtn:active {
-  background-color: #3e8e41;
-  /* box-shadow: 0 2px #666; */
-  /* transform: translateY(2px); */
 }
 
 .upload, .save {
@@ -210,12 +186,6 @@ input {
     border: none;
     cursor: pointer;
 }
-
-/* #dropbtn:after { */ 
-/*     content: " "; */ 
-/*     display: block; */
-/*     clear: both; */
-/* } */ 
 
 .droplabel img {
 	width: 50px;
