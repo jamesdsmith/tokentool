@@ -98,7 +98,7 @@ canvas {
   background-color: #4CAF50;
   border: none;
   border-radius: 10px;
-  box-shadow: 0 4px #999;
+  /* box-shadow: 0 4px #999; */
   margin-bottom: 10px;
 }
 
@@ -107,9 +107,30 @@ canvas {
 }
 
 .button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 2px #666;
-  transform: translateY(2px);
+  background-color: #3e8041;
+}
+
+.scaleDown {
+	width: 20px;
+	height: 30px;
+	padding: 2px;
+	border-radius: 4px 0px 0px 4px;
+}
+
+.scaleUp {
+	width: 20px;
+	height: 30px;
+	padding: 2px;
+	border-radius: 0px 4px 4px 0px;
+}
+
+.scaleValue {
+	width: 40px;
+	height: 30px;
+	outline: none;
+	border: none;
+	font-size: 10pt;
+	margin: 0;
 }
 
 .urlText {
@@ -119,7 +140,7 @@ canvas {
   padding: 10px 12px;
   font-size: 12pt;
   border-radius: 10px 0px 0px 10px;
-  box-shadow: 0 4px #999;
+  /* box-shadow: 0 4px #999; */
   margin-bottom: 15px;
   width: 220px;
 }
@@ -136,7 +157,7 @@ canvas {
   background-color: #4CAF50;
   border: none;
   border-radius: 0px 10px 10px 0px;
-  box-shadow: 0 4px #999;
+  /* box-shadow: 0 4px #999; */
   margin-bottom: 15px;
 }
 
@@ -146,8 +167,8 @@ canvas {
 
 .urlBtn:active {
   background-color: #3e8e41;
-  box-shadow: 0 2px #666;
-  transform: translateY(2px);
+  /* box-shadow: 0 2px #666; */
+  /* transform: translateY(2px); */
 }
 
 .upload, .save {
@@ -260,4 +281,13 @@ canvas {
 .droparrow.show {
 	border-radius: 0px 8px 0px 0px;
 	display: table-cell;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
 }

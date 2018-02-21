@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	var frameColor = document.getElementById('frameColor');
 	var bgColor = document.getElementById('bgColor');
 	var dropdownContent = document.getElementById('dropdown-content');
+	var scaleValue = document.getElementById('scaleValue');
 
 	var preview = document.getElementById('preview');
 	var prevctx = preview.getContext('2d');
@@ -98,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	transparency.addEventListener('input', render);
 	document.getElementById('scaleUp').addEventListener('click', scaleUp);
 	document.getElementById('scaleDown').addEventListener('click', scaleDown);
+	scaleValue.addEventListener('change', scaleChange);
 	tokenWidth.addEventListener('input', widthChange);
 	tokenHeight.addEventListener('input', heightChange);
 	sizeSelect.addEventListener('change', sizeChange);
@@ -278,14 +280,22 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	function scaleUp() {
 		imscale += 0.1;
+		scaleValue.value = imscale.toFixed(2);
 		render();
 	}
 
 	function scaleDown() {
 		imscale -= 0.1;
+		scaleValue.value = imscale.toFixed(2);
 		if (imscale < 0) {
 			imscale = 0;
 		}
+		render();
+	}
+
+	function scaleChange() {
+		imscale = parseFloat(scaleValue.value);
+		scaleValue.value = imscale.toFixed(2);
 		render();
 	}
 
