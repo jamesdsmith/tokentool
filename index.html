@@ -23,6 +23,9 @@
 					<canvas id="preview" width="160" height="160">
 					</canvas>
 				</div>
+				<table>
+					<tr>
+						<td>
 				<div class="dropdown">
 				  <div id="dropbtn" class="dropbtn dropbtn-click">
 					  <div id="droplabel" class="droplabel dropbtn-click">
@@ -36,24 +39,66 @@
 				  <div id="dropdown-content" class="dropdown-content">
 				  </div>
 				</div>
-				<input class="jscolor" id="frameColor" value="ffffff">
-				<br/>
-				<select id="sizeSelect">
-					<option value="256">256 x 256</option>
-					<option value="200">200 x 200</option>
-					<option value="160">160 x 160</option>
-					<option value="128">128 x 128</option>
-					<option value="80">80 x 80</option>
-					<option value="64">64 x 64</option>
-				</select>
-				<p><label>Width: <input type="number" id="tokenWidth" value="256" /></label></p>
-				<p><label>Height: <input type="number" id="tokenHeight" value="256" /></label></p>
-				<p>
-					<label><input type="checkbox" id="solidBackground" checked /> Solid Background</label>
-					<input class="jscolor" id="bgColor" value="ffffff">
-				</p>
-				<p>Transparency: <input type="range" id="transparency" min="0" max="100" value="100" /></p>
-				<p>Zoom: <button id="scaleDown" class="button scaleDown">-</button><input type="number" id="scaleValue" class="scaleValue" step="0.1" value="1.00"/><button id="scaleUp" class="button scaleUp">+</button></p>
+						</td>
+						<td>
+							<input class="jscolor" id="frameColor" value="ffffff">
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<select id="sizeSelect">
+								<option value="256">256 x 256</option>
+								<option value="200">200 x 200</option>
+								<option value="160">160 x 160</option>
+								<option value="128">128 x 128</option>
+								<option value="80">80 x 80</option>
+								<option value="64">64 x 64</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="tokenWidth">Width:</label>
+						</td>
+						<td>
+							<input type="number" id="tokenWidth" value="256" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="tokenHeight">Height:</label>
+						</td>
+						<td>
+							<input type="number" id="tokenHeight" value="256" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="checkbox" id="solidBackground" checked />
+							<label for="solidBackground">Solid BG</label>
+						</td>
+						<td>
+							<input class="jscolor" id="bgColor" value="ffffff">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Transparency: 
+						</td>
+						<td>
+							<input type="range" id="transparency" min="0" max="100" value="100" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Zoom:
+						</td>
+						<td>
+							<button id="scaleDown" class="button scaleDown">-</button><input type="number" id="scaleValue" class="scaleValue" step="0.1" value="1.00"/><button id="scaleUp" class="button scaleUp">+</button>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<div id="uploadBg" hidden>
