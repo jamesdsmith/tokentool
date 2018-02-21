@@ -142,8 +142,10 @@ document.addEventListener('DOMContentLoaded', function(){
 	uploadBg.addEventListener('dragend', fileHoverEnd);
 	document.getElementById('dropbtn').addEventListener('click', openMenu);
 	window.onclick = function(e) {
-		if (!e.target.matches('.dropbtn') && !e.target.parentElement.matches('.dropbtn')) {
-			document.getElementById("dropbtn").classList.remove("show");
+		if (!e.target.matches('.dropbtn-click')) {
+		console.log("window online");
+			document.getElementById("droplabel").classList.remove("show");
+			document.getElementById("droparrow").classList.remove("show");
 			var dropdowns = document.getElementsByClassName("dropdown-content");
 			var i;
 			for (i = 0; i < dropdowns.length; i++) {
@@ -173,7 +175,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 
 	function openMenu() {
-		document.getElementById("dropbtn").classList.toggle("show");
+		console.log("openMenu");
+		document.getElementById("droplabel").classList.toggle("show");
+		document.getElementById("droparrow").classList.toggle("show");
 		document.getElementById("dropdown-content").classList.toggle("show");
 	}
 

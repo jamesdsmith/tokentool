@@ -165,39 +165,52 @@ canvas {
 	background-image: url("icons/disk.svg");
 }
 
-/* Style The Dropdown Button */
-.dropbtn {
-    background-color: #FFF;
-    color: white;
-    padding: 8px;
-    border: none;
-    cursor: pointer;
-	border-radius: 8px;
-	outline: none;
-	min-width: 90px;
-}
-
-.dropbtn img {
-	width: 50px;
-	height: 50px;
-	display: inline;
-}
-
-.arrow-down {
-  width: 0; 
-  height: 0; 
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 8px solid #444;
-  display: inline-block;
-  margin-bottom: 19px;
-  margin-left: 5px;
-}
-
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
     position: relative;
     display: inline-block;
+	padding-top: 10px;
+}
+
+/* Style The Dropdown Button */
+.dropbtn {
+    border: none;
+    cursor: pointer;
+}
+
+/* #dropbtn:after { */ 
+/*     content: " "; */ 
+/*     display: block; */
+/*     clear: both; */
+/* } */ 
+
+.droplabel img {
+	width: 50px;
+	height: 50px;
+	padding: 4px;
+}
+
+.droplabel {
+	display: table-cell;
+	line-height: 0px;
+	vertical-align: middle;
+	border-radius: 8px 0px 0px 8px;
+	background-color: #FFF;
+}
+
+.droparrow {
+	display: table-cell;
+	top: 0px;
+	background-color: #4CAF50;
+	min-height: 100%;
+	padding: 0;
+	line-height: 0;
+	border-radius: 0px 8px 8px 0px;
+	vertical-align: middle;
+}
+
+.dropbtn:hover .droparrow {
+	background-color: #3e8e41
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -205,25 +218,27 @@ canvas {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 90px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 	overflow-y: auto;
 	height: 200px;
+	width: 100%;
 }
 
 /* Links inside the dropdown */
 .dropdown-content img {
     color: black;
-    padding: 16px;
+    padding: 4px;
     text-decoration: none;
-    display: block;
+    display: inline-block;
 	width: 50px;
 	height: 50px;
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content img:hover {background-color: #f1f1f1}
+.dropdown-content img:hover {
+	background-color: #f1f1f1;
+}
 
 /* Show the dropdown menu on hover */
 /* .dropdown:hover .dropdown-content { */
@@ -231,12 +246,18 @@ canvas {
 /* } */
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {
+.dropdown:hover .droplabel {
     background-color: #dddddd;
 }
 
 .show {display:block;}
 
-.dropbtn.show {
-	border-radius: 8px 8px 0px 0px;
+.droplabel.show {
+	border-radius: 8px 0px 0px 0px;
+	display: table-cell;
+}
+
+.droparrow.show {
+	border-radius: 0px 8px 0px 0px;
+	display: table-cell;
 }
