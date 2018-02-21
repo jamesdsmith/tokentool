@@ -15,6 +15,10 @@ canvas {
 	display:block;
 }
 
+input {
+	width: 100px;
+}
+
 .mainCanvas {
 	background-color: #444;
 }
@@ -116,6 +120,7 @@ canvas {
 	padding: 4px;
 	border-radius: 4px 0px 0px 4px;
 	color: black;
+	font-size: 10pt;
 }
 
 .scaleUp {
@@ -123,6 +128,7 @@ canvas {
 	padding: 4px;
 	border-radius: 0px 4px 4px 0px;
 	color: black;
+	font-size: 10pt;
 }
 
 .scaleValue {
@@ -131,8 +137,12 @@ canvas {
 	padding: 4px;
 	outline: none;
 	border: none;
-	font-size: 12pt;
+	font-size: 10pt;
 	text-align: center;
+}
+
+#solidBackground {
+	width: 8px;
 }
 
 .urlText {
