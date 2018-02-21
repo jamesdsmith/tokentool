@@ -112,25 +112,26 @@ canvas {
 
 .scaleDown {
 	width: 20px;
-	height: 30px;
-	padding: 2px;
+	padding: 4px;
 	border-radius: 4px 0px 0px 4px;
+	color: black;
 }
 
 .scaleUp {
 	width: 20px;
-	height: 30px;
-	padding: 2px;
+	padding: 4px;
 	border-radius: 0px 4px 4px 0px;
+	color: black;
 }
 
 .scaleValue {
-	width: 40px;
-	height: 30px;
+	display: inline-block;
+	width: 60px;
+	padding: 4px;
 	outline: none;
 	border: none;
-	font-size: 10pt;
-	margin: 0;
+	font-size: 12pt;
+	text-align: center;
 }
 
 .urlText {
