@@ -1,40 +1,28 @@
 document.addEventListener('DOMContentLoaded', function(){
 	var frameData = {
-		"frame-round-thick-flat": {
-			"filename": "frame-round-thick-flat.png",
-			"maskname": "mask-round.png"
+		"frame-round-flat": {
+			filename: "images/frame-round-flat.png",
+			maskname: "images/mask-round.png"
 		},
-		"frame-round-thick-sharp": {
-			"filename": "frame-round-thick-sharp.png",
-			"maskname": "mask-round.png"
+		"frame-round-sharp": {
+			filename: "images/frame-round-sharp.png",
+			maskname: "images/mask-round.png"
 		},
-		"frame-round-thick-soft": {
-			"filename": "frame-round-thick-soft.png",
-			"maskname": "mask-round.png"
-		},
-		"frame-round-thin-flat": {
-			"filename": "frame-round-thin-flat.png",
-			"maskname": "mask-round.png"
-		},
-		"frame-round-thin-sharp": {
-			"filename": "frame-round-thin-sharp.png",
-			"maskname": "mask-round.png"
-		},
-		"frame-round-thin-soft": {
-			"filename": "frame-round-thin-soft.png",
-			"maskname": "mask-round.png"
+		"frame-round-soft": {
+			filename: "images/frame-round-soft.png",
+			maskname: "images/mask-round.png"
 		},
 		"frame-square-thick-flat": {
-			"filename": "frame-square-thick-flat.png",
-			"maskname": "mask-square.png"
+			filename: "images/frame-square-flat.png",
+			maskname: "images/mask-square.png"
 		},
 		"frame-square-thick-sharp": {
-			"filename": "frame-square-thick-sharp.png",
-			"maskname": "mask-square.png"
+			filename: "images/frame-square-sharp.png",
+			maskname: "images/mask-square.png"
 		},
 		"frame-square-thick-soft": {
-			"filename": "frame-square-thick-soft.png",
-			"maskname": "mask-square.png"
+			filename: "images/frame-square-soft.png",
+			maskname: "images/mask-square.png"
 		},
 	};
 	var canvas = document.getElementById('canvas');
@@ -83,7 +71,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	var keys = Object.keys(frameData);
 	for (var i = 0; i < keys.length; i++) {
 		var im = document.createElement('img');
-		im.src = "images/" + frameData[keys[i]].filename;
+		im.id = keys[i];
+		im.src = frameData[keys[i]].filename;
 		dropdownContent.appendChild(im);
 	}
 	// <img src="images/frame-round-thick-sharp.png" />
@@ -145,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function(){
 	document.getElementById('dropbtn').addEventListener('click', openMenu);
 	window.onclick = function(e) {
 		if (!e.target.matches('.dropbtn-click')) {
-		console.log("window online");
 			document.getElementById("droplabel").classList.remove("show");
 			document.getElementById("droparrow").classList.remove("show");
 			var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -164,28 +152,29 @@ document.addEventListener('DOMContentLoaded', function(){
 		var item = items[i];
 		item.addEventListener('click', selectBorder);
 	}
-	border.addEventListener('load', updateFrame);
+	border.addEventListener('load', redrawFrame);
+	mask.addEventListener('load', redrawFrame);
 	// console.log(frameColor.jscolor);
 	// document.getElementById("dropimg").addEventListener('click', openMenu);
 	// frameColor.addEventListener('fineChange', updateFrame);
-	frameColor.jscolor.onFineChange = function(jscolor) {
+	frameColor.addEventListener('change', redrawFrame);
+	bgColor.addEventListener('change', render);
+
+	function redrawFrame() {
 		updateFrame();
-		render();
-	}
-	bgColor.jscolor.onFineChange = function(jscolor) {
 		render();
 	}
 
 	function openMenu() {
-		console.log("openMenu");
 		document.getElementById("droplabel").classList.toggle("show");
 		document.getElementById("droparrow").classList.toggle("show");
 		document.getElementById("dropdown-content").classList.toggle("show");
 	}
 
 	function selectBorder(e) {
-		border.src = e.target.src;
-		document.getElementById("dropimg").src = e.target.src;
+		border.src = frameData[e.target.id].filename;
+		mask.src = frameData[e.target.id].maskname;
+		document.getElementById("dropimg").src = border.src;
 		updateFrame();
 		render();
 	}
@@ -345,7 +334,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		finalFrame.height = border.height;
 		var ctx = finalFrame.getContext('2d');
 		ctx.rect(0, 0, border.width, border.height);
-		ctx.fillStyle = frameColor.jscolor.toHEXString();
+		ctx.fillStyle = frameColor.value;
 		ctx.fill();
 		ctx.globalCompositeOperation = "multiply";
 		ctx.drawImage(border, 0, 0, border.width, border.height);
@@ -375,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		ps = w / brw;
 		offscreenCtx.clearRect(0, 0, w, h);
 		if (solidBg.checked) {
-			offscreenCtx.fillStyle = bgColor.jscolor.toHEXString();
+			offscreenCtx.fillStyle = bgColor.value;
 			offscreenCtx.rect(0, 0, w, h);
 			offscreenCtx.fill();
 			offscreenCtx.globalCompositeOperation = 'destination-atop';

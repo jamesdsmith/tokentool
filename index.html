@@ -3,12 +3,11 @@
 	<head>
 		<title>TokenTool v0.1</title>
 		<link rel="stylesheet" href="style.css" />
-		<script type="text/javascript" src="jscolor.min.js"></script>
 		<script type="text/javascript" src="code.js"></script>
 	</head>
 	<body>
 		<div style="display:none;">
-			<img id="border" src="images/frame-round-thick-sharp.png" />
+			<img id="border" src="images/frame-round-sharp.png" />
 			<img id="mask" src="images/mask-round.png" />
 			<img id="image" src="images/brett.png" />
 		</div>
@@ -29,7 +28,7 @@
 							<div class="dropdown">
 							  <div id="dropbtn" class="dropbtn dropbtn-click">
 								  <div id="droplabel" class="droplabel dropbtn-click">
-									  <img src="images/frame-round-thick-sharp.png" id="dropimg" class="dropbtn-click" />
+									  <img src="images/frame-round-sharp.png" id="dropimg" class="dropbtn-click" />
 								  </div>
 								  <div id="droparrow" class="droparrow dropbtn-click">
 									  <!-- <div class="arrow-down dropbtn-click"></div> -->
@@ -41,7 +40,7 @@
 							</div>
 						</td>
 						<td>
-							<input class="jscolor" id="frameColor" value="ffffff">
+							<input type="color" id="frameColor" value="#ffffff" />
 						</td>
 					</tr>
 					<tr>
@@ -67,11 +66,11 @@
 					</tr>
 					<tr>
 						<td><input type="checkbox" id="solidBackground" checked /><label for="solidBackground">Solid BG</label></td>
-						<td><input class="jscolor" id="bgColor" value="ffffff"></td>
+						<td><input type="color" id="bgColor" value="#ffffff"></td>
 					</tr>
 					<tr>
 						<td>Transparency:</td>
-						<td><input type="range" id="transparency" min="0" max="100" value="100" /></td>
+						<td><input type="range" id="transparency" class="slider" min="0" max="100" value="100" /></td>
 					</tr>
 					<tr>
 						<td>Zoom:</td>
