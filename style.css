@@ -145,6 +145,10 @@ input {
 	border-color: grey;
 }
 
+.loadFromURL {
+	display: none;
+}
+
 .urlText {
   display: inline-block;
   outline: none;
