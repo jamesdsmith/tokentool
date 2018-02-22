@@ -157,8 +157,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	// console.log(frameColor.jscolor);
 	// document.getElementById("dropimg").addEventListener('click', openMenu);
 	// frameColor.addEventListener('fineChange', updateFrame);
-	frameColor.addEventListener('change', redrawFrame);
-	bgColor.addEventListener('change', render);
+	frameColor.addEventListener('input', redrawFrame);
+	bgColor.addEventListener('input', render);
 
 	function redrawFrame() {
 		updateFrame();
