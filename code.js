@@ -154,13 +154,12 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 	border.addEventListener('load', redrawFrame);
 	mask.addEventListener('load', redrawFrame);
-	// console.log(frameColor.jscolor);
-	// document.getElementById("dropimg").addEventListener('click', openMenu);
-	// frameColor.addEventListener('fineChange', updateFrame);
-	frameColor.addEventListener('input', redrawFrame);
-	bgColor.addEventListener('input', render);
+	frameColor.jscolor.onFineChange = redrawFrame;
+	bgColor.jscolor.onFineChange = redrawFrame;
+	// frameColor.addEventListener('input', redrawFrame);
+	// bgColor.addEventListener('input', render);
 
-	function redrawFrame() {
+	function redrawFrame(v) {
 		updateFrame();
 		render();
 	}
@@ -334,13 +333,17 @@ document.addEventListener('DOMContentLoaded', function(){
 		finalFrame.height = border.height;
 		var ctx = finalFrame.getContext('2d');
 		ctx.rect(0, 0, border.width, border.height);
-		ctx.fillStyle = frameColor.value;
+		ctx.fillStyle = getColor(frameColor);
 		ctx.fill();
 		ctx.globalCompositeOperation = "multiply";
 		ctx.drawImage(border, 0, 0, border.width, border.height);
 		ctx.globalCompositeOperation = "destination-in";
 		ctx.drawImage(border, 0, 0, border.width, border.height);
 		ctx.globalCompositeOperation = "source-over";
+	}
+
+	function getColor(elem) {
+		return elem.jscolor.toRGBString();
 	}
 
 	function render() {
@@ -364,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		ps = w / brw;
 		offscreenCtx.clearRect(0, 0, w, h);
 		if (solidBg.checked) {
-			offscreenCtx.fillStyle = bgColor.value;
+			offscreenCtx.fillStyle = getColor(bgColor);
 			offscreenCtx.rect(0, 0, w, h);
 			offscreenCtx.fill();
 			offscreenCtx.globalCompositeOperation = 'destination-atop';
