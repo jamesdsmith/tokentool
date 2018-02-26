@@ -76,6 +76,9 @@ TokenView.prototype = {
 		this.scaleDownHandler = this.scaleDown.bind(this);
 		this.scaleChangeHandler = this.scaleChange.bind(this);
 		this.updateScaleHandler = this.updateScale.bind(this);
+		this.widthChangeHandler = this.widthChange.bind(this);
+		this.heightChangeHandler = this.heightChange.bind(this);
+		this.sizeChangeHandler = this.sizeChange.bind(this);
 
         return this;
     },
@@ -93,9 +96,9 @@ TokenView.prototype = {
 		document.getElementById('scaleUp').addEventListener('click', this.scaleUpHandler);
 		document.getElementById('scaleDown').addEventListener('click', this.scaleDownHandler);
 		this.scaleValue.addEventListener('change', this.scaleChangeHandler);
-		// tokenWidth.addEventListener('input', widthChange);
-		// tokenHeight.addEventListener('input', heightChange);
-		// sizeSelect.addEventListener('change', sizeChange);
+		tokenWidth.addEventListener('input', this.widthChangeHandler);
+		tokenHeight.addEventListener('input', this.heightChangeHandler);
+		sizeSelect.addEventListener('change', this.sizeChangeHandler);
 		// saveBtn.addEventListener('click', saveImg);
 		this.uploadBtn.addEventListener('click', this.showFileDialogHandler);
 		this.uploadBg.addEventListener('click', this.clickUploadBgHandler);
@@ -172,6 +175,7 @@ TokenView.prototype = {
 		pauseEvent(e);
 	},
 
+	// Scaling image UI
 	scaleUp: function() {
 		this.scaleUpEvent.notify();
 	},
@@ -186,6 +190,29 @@ TokenView.prototype = {
 
 	updateScale: function() {
 		this.scaleValue.value = this.model.imscale.toFixed(2);
+		this.render();
+	},
+
+	// Changing the token size UI
+	sizeChange: function() {
+		this.tokenWidth.value = this.sizeSelect.value;
+		this.tokenHeight.value = this.sizeSelect.value;
+		this.offscreen.width = this.tokenWidth.value;
+		this.offscreen.height = this.tokenHeight.value;
+		this.render();
+	},
+
+	widthChange: function() {
+		this.tokenHeight.value = this.tokenWidth.value;
+		this.offscreen.width = this.tokenWidth.value;
+		this.offscreen.height = this.tokenHeight.value;
+		this.render();
+	},
+
+	heightChange: function() {
+		this.tokenWidth.value = this.tokenHeight.value;
+		this.offscreen.width = this.tokenWidth.value;
+		this.offscreen.height = this.tokenHeight.value;
 		this.render();
 	},
 
@@ -282,7 +309,7 @@ TokenView.prototype = {
 			this.offscreenCtx.drawImage(this.mask, 0, 0, w, h);
 		}
 		this.offscreenCtx.globalCompositeOperation = 'source-over';
-		this.offscreenCtx.drawImage(this.image, w/2 - imw*ps/2 + this.imX*ps, h/2 - imh*ps/2 + this.imY*ps, imw*ps, imh*ps);
+		this.offscreenCtx.drawImage(this.image, w/2 - imw*ps/2 + this.model.imX*ps, h/2 - imh*ps/2 + this.model.imY*ps, imw*ps, imh*ps);
 		this.offscreenCtx.globalCompositeOperation = 'destination-in';
 		this.offscreenCtx.drawImage(this.mask, 0, 0, w, h);
 

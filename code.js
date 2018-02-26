@@ -89,9 +89,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	// document.getElementById('scaleUp').addEventListener('click', scaleUp);
 	// document.getElementById('scaleDown').addEventListener('click', scaleDown);
 	// scaleValue.addEventListener('change', scaleChange);
-	tokenWidth.addEventListener('input', widthChange);
-	tokenHeight.addEventListener('input', heightChange);
-	sizeSelect.addEventListener('change', sizeChange);
+	// tokenWidth.addEventListener('input', widthChange);
+	// tokenHeight.addEventListener('input', heightChange);
+	// sizeSelect.addEventListener('change', sizeChange);
 	saveBtn.addEventListener('click', saveImg);
 	// uploadBtn.addEventListener('click', uploadImg);
 	// uploadBg.addEventListener('click', clickUploadBg);
@@ -250,48 +250,48 @@ document.addEventListener('DOMContentLoaded', function(){
 		document.body.removeChild(a);
 	}
 
-	function sizeChange() {
-		tokenWidth.value = sizeSelect.value;
-		tokenHeight.value = sizeSelect.value;
-		offscreen.width = tokenWidth.value;
-		offscreen.height = tokenHeight.value;
-		render();
-	}
+	// function sizeChange() {
+	// 	tokenWidth.value = sizeSelect.value;
+	// 	tokenHeight.value = sizeSelect.value;
+	// 	offscreen.width = tokenWidth.value;
+	// 	offscreen.height = tokenHeight.value;
+	// 	render();
+	// }
 
-	function widthChange() {
-		tokenHeight.value = tokenWidth.value;
-		offscreen.width = tokenWidth.value;
-		offscreen.height = tokenHeight.value;
-		render();
-	}
+	// function widthChange() {
+	// 	tokenHeight.value = tokenWidth.value;
+	// 	offscreen.width = tokenWidth.value;
+	// 	offscreen.height = tokenHeight.value;
+	// 	render();
+	// }
 
-	function heightChange() {
-		tokenWidth.value = tokenHeight.value;
-		offscreen.width = tokenWidth.value;
-		offscreen.height = tokenHeight.value;
-		render();
-	}
+	// function heightChange() {
+	// 	tokenWidth.value = tokenHeight.value;
+	// 	offscreen.width = tokenWidth.value;
+	// 	offscreen.height = tokenHeight.value;
+	// 	render();
+	// }
 
-	function scaleUp() {
-		imscale += 0.1;
-		scaleValue.value = imscale.toFixed(2);
-		render();
-	}
+	// function scaleUp() {
+	// 	imscale += 0.1;
+	// 	scaleValue.value = imscale.toFixed(2);
+	// 	render();
+	// }
 
-	function scaleDown() {
-		imscale -= 0.1;
-		scaleValue.value = imscale.toFixed(2);
-		if (imscale < 0) {
-			imscale = 0;
-		}
-		render();
-	}
+	// function scaleDown() {
+	// 	imscale -= 0.1;
+	// 	scaleValue.value = imscale.toFixed(2);
+	// 	if (imscale < 0) {
+	// 		imscale = 0;
+	// 	}
+	// 	render();
+	// }
 
-	function scaleChange() {
-		imscale = parseFloat(scaleValue.value);
-		scaleValue.value = imscale.toFixed(2);
-		render();
-	}
+	// function scaleChange() {
+	// 	imscale = parseFloat(scaleValue.value);
+	// 	scaleValue.value = imscale.toFixed(2);
+	// 	render();
+	// }
 
 	// function resizeCanvas() {
 	// 	canvas.width = window.innerWidth;
@@ -325,13 +325,13 @@ document.addEventListener('DOMContentLoaded', function(){
 	// 	}
 	// }
 
-	function pauseEvent(e){
-		if(e.stopPropagation) e.stopPropagation();
-		if(e.preventDefault) e.preventDefault();
-		e.cancelBubble=true;
-		e.returnValue=false;
-		return false;
-	}
+	// function pauseEvent(e){
+	// 	if(e.stopPropagation) e.stopPropagation();
+	// 	if(e.preventDefault) e.preventDefault();
+	// 	e.cancelBubble=true;
+	// 	e.returnValue=false;
+	// 	return false;
+	// }
 
 	// @View
 	// function updateFrame() {
