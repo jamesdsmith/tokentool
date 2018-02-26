@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function(){
+	// @Model
 	var frameData = {
 		"frame-round-flat": {
 			filename: "images/frame-round-flat.png",
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			maskname: "images/mask-square.png"
 		},
 	};
+	// @View
 	var canvas = document.getElementById('canvas');
 	var context = canvas.getContext('2d');
 	var border = document.getElementById('border');
@@ -55,19 +57,18 @@ document.addEventListener('DOMContentLoaded', function(){
 	var offscreenCtx = offscreen.getContext('2d');
 	
 	var finalFrame = document.createElement('canvas');
-	var finalFrameColor = "rgb(255, 255, 255)"
 
+	// @Controller
 	var mouseDown = false;
 	var mouseX = 0;
 	var mouseY = 0;
 
+	// @Model
 	var imX = 0;
 	var imY = 0;
-
 	var imscale = 1.0;
-	var scaleX = 1.0;
-	var scaleY = 1.0;
 
+	// @Todo
 	var keys = Object.keys(frameData);
 	for (var i = 0; i < keys.length; i++) {
 		var im = document.createElement('img');
@@ -75,9 +76,8 @@ document.addEventListener('DOMContentLoaded', function(){
 		im.src = frameData[keys[i]].filename;
 		dropdownContent.appendChild(im);
 	}
-	// <img src="images/frame-round-thick-sharp.png" />
-	// <img src="images/frame-round-thin-soft.png" />
 
+	// @View
 	// resize the canvas to fill browser window dynamically
 	window.addEventListener('resize', resizeCanvas);
 	window.addEventListener('load', resizeCanvas);
@@ -98,14 +98,55 @@ document.addEventListener('DOMContentLoaded', function(){
 	fileField.addEventListener('change', chooseFile);
 	image.addEventListener('load', render);
 	document.getElementById('loadUrlBtn').addEventListener('click', loadUrl);
-	urlText.addEventListener('keyup', function(e) {
-		e.preventDefault();
-		if (e.keyCode == 13) {
-			document.getElementById('loadUrlBtn').click();
+	urlText.addEventListener('keyup', handleUrlTextEnter)
+	uploadBg.addEventListener('drop', handleFileDrop);
+	uploadBg.addEventListener('dragover', fileHoverStart);
+	uploadBg.addEventListener('dragenter', fileHoverStart);
+	uploadBg.addEventListener('dragleave', fileHoverEnd);
+	uploadBg.addEventListener('dragend', fileHoverEnd);
+	document.getElementById('dropbtn').addEventListener('click', openMenu);
+	window.addEventListener('click', handleWindowClick);
+	var items = Array.from(document.getElementById("dropdown-content").children);
+	var i;
+	for (i = 0; i < items.length; i++) {
+		var item = items[i];
+		item.addEventListener('click', selectBorder);
+	}
+	border.addEventListener('load', redrawFrame);
+	mask.addEventListener('load', redrawFrame);
+	frameColor.jscolor.onFineChange = redrawFrame;
+	bgColor.jscolor.onFineChange = redrawFrame;
+	redrawFrame();
+
+	// @View
+	function showFileDialog() {
+		uploadBg.hidden = false;
+	}
+
+	function hideFileDialog() {
+		uploadBg.hidden = true;
+		fileField.value = ""
+		urlText.value = ""
+	}
+
+	// @Controller
+	function handleWindowClick(e) {
+		if (!e.target.matches('.dropbtn-click')) {
+			document.getElementById("droplabel").classList.remove("show");
+			document.getElementById("droparrow").classList.remove("show");
+			var dropdowns = document.getElementsByClassName("dropdown-content");
+			var i;
+			for (i = 0; i < dropdowns.length; i++) {
+				var openDropdown = dropdowns[i];
+				if (openDropdown.classList.contains('show')) {
+					openDropdown.classList.remove('show');
+				}
+			}
 		}
-	})
-	uploadBg.addEventListener('drop', function(e) {
-		e.preventDefault();
+	}
+
+	function handleFileDrop(e) {
+		pauseEvent(e);
 		// If dropped items aren't files, reject them
 		var dt = e.dataTransfer;
 		if (dt.items) {
@@ -123,43 +164,17 @@ document.addEventListener('DOMContentLoaded', function(){
 		}
 		hideFileDialog();
 		fileHoverEnd(e);
-	});
-	uploadBg.addEventListener('dragover', function(e) {
-		e.preventDefault();
-		fileHoverStart(e);
-	});
-	uploadBg.addEventListener('dragenter', fileHoverStart);
-	uploadBg.addEventListener('dragleave', fileHoverEnd);
-	uploadBg.addEventListener('dragend', fileHoverEnd);
-	document.getElementById('dropbtn').addEventListener('click', openMenu);
-	window.onclick = function(e) {
-		if (!e.target.matches('.dropbtn-click')) {
-			document.getElementById("droplabel").classList.remove("show");
-			document.getElementById("droparrow").classList.remove("show");
-			var dropdowns = document.getElementsByClassName("dropdown-content");
-			var i;
-			for (i = 0; i < dropdowns.length; i++) {
-				var openDropdown = dropdowns[i];
-				if (openDropdown.classList.contains('show')) {
-					openDropdown.classList.remove('show');
-				}
-			}
+	}
+
+	function handleUrlTextEnter(e) {
+		pauseEvent(e);
+		if (e.keyCode == 13) {
+			document.getElementById('loadUrlBtn').click();
 		}
 	}
-	var items = Array.from(document.getElementById("dropdown-content").children);
-	var i;
-	for (i = 0; i < items.length; i++) {
-		var item = items[i];
-		item.addEventListener('click', selectBorder);
-	}
-	border.addEventListener('load', redrawFrame);
-	mask.addEventListener('load', redrawFrame);
-	frameColor.jscolor.onFineChange = redrawFrame;
-	bgColor.jscolor.onFineChange = redrawFrame;
-	// frameColor.addEventListener('input', redrawFrame);
-	// bgColor.addEventListener('input', render);
 
 	function redrawFrame(v) {
+		console.log("redraw frame");
 		updateFrame();
 		render();
 	}
@@ -179,6 +194,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 
 	function fileHoverStart(e) {
+		pauseEvent(e);
 		dropArea.classList.add('is-dragover');
 	}
 
@@ -192,16 +208,6 @@ document.addEventListener('DOMContentLoaded', function(){
 			image.src = r.result;
 		};
 		r.readAsDataURL(f);
-	}
-
-	function showFileDialog() {
-		uploadBg.hidden = false;
-	}
-
-	function hideFileDialog() {
-		uploadBg.hidden = true;
-		fileField.value = ""
-		urlText.value = ""
 	}
 
 	function loadUrl() {
@@ -327,6 +333,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		return false;
 	}
 
+	// @View
 	function updateFrame() {
 		finalFrame = document.createElement('canvas');
 		finalFrame.width = border.width;
@@ -349,8 +356,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	function render() {
 		var w = canvas.width;
 		var h = canvas.height;
-		scaleX = tokenWidth.value / finalFrame.width;
-		scaleY = tokenHeight.value / finalFrame.height;
+		var scaleX = tokenWidth.value / finalFrame.width;
+		var scaleY = tokenHeight.value / finalFrame.height;
 		var brw = finalFrame.width * scaleX;
 		var brh = finalFrame.height * scaleY;
 		var imw = image.width*imscale;
