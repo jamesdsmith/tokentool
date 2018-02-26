@@ -1,39 +1,39 @@
 document.addEventListener('DOMContentLoaded', function(){
 	// @Model
-	var frameData = {
-		"frame-round-flat": {
-			filename: "images/frame-round-flat.png",
-			maskname: "images/mask-round.png"
-		},
-		"frame-round-sharp": {
-			filename: "images/frame-round-sharp.png",
-			maskname: "images/mask-round.png"
-		},
-		"frame-round-soft": {
-			filename: "images/frame-round-soft.png",
-			maskname: "images/mask-round.png"
-		},
-		"frame-square-thick-flat": {
-			filename: "images/frame-square-flat.png",
-			maskname: "images/mask-square.png"
-		},
-		"frame-square-thick-sharp": {
-			filename: "images/frame-square-sharp.png",
-			maskname: "images/mask-square.png"
-		},
-		"frame-square-thick-soft": {
-			filename: "images/frame-square-soft.png",
-			maskname: "images/mask-square.png"
-		},
-	};
+	// var frameData = {
+	// 	"frame-round-flat": {
+	// 		filename: "images/frame-round-flat.png",
+	// 		maskname: "images/mask-round.png"
+	// 	},
+	// 	"frame-round-sharp": {
+	// 		filename: "images/frame-round-sharp.png",
+	// 		maskname: "images/mask-round.png"
+	// 	},
+	// 	"frame-round-soft": {
+	// 		filename: "images/frame-round-soft.png",
+	// 		maskname: "images/mask-round.png"
+	// 	},
+	// 	"frame-square-thick-flat": {
+	// 		filename: "images/frame-square-flat.png",
+	// 		maskname: "images/mask-square.png"
+	// 	},
+	// 	"frame-square-thick-sharp": {
+	// 		filename: "images/frame-square-sharp.png",
+	// 		maskname: "images/mask-square.png"
+	// 	},
+	// 	"frame-square-thick-soft": {
+	// 		filename: "images/frame-square-soft.png",
+	// 		maskname: "images/mask-square.png"
+	// 	},
+	// };
 	// @View
 	var canvas = document.getElementById('canvas');
-	var context = canvas.getContext('2d');
-	var border = document.getElementById('border');
-	var mask = document.getElementById('mask');
+	// var context = canvas.getContext('2d');
+	// var border = document.getElementById('border');
+	// var mask = document.getElementById('mask');
 	var image = document.getElementById('image');
-	var solidBg = document.getElementById('solidBackground');
-	var transparency = document.getElementById('transparency');
+	// var solidBg = document.getElementById('solidBackground');
+	// var transparency = document.getElementById('transparency');
 	// var tokenWidth = document.getElementById('tokenWidth');
 	// var tokenHeight = document.getElementById('tokenHeight');
 	var sizeSelect = document.getElementById('sizeSelect');
@@ -44,9 +44,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	var fileField = document.getElementById('fileField');
 	var urlText = document.getElementById('urlText');
 	var dropArea = document.getElementById('dropArea');
-	var frameColor = document.getElementById('frameColor');
-	var bgColor = document.getElementById('bgColor');
-	var dropdownContent = document.getElementById('dropdown-content');
+	// var frameColor = document.getElementById('frameColor');
+	// var bgColor = document.getElementById('bgColor');
+	// var dropdownContent = document.getElementById('dropdown-content');
 	var scaleValue = document.getElementById('scaleValue');
 
 	// var preview = document.getElementById('preview');
@@ -64,18 +64,18 @@ document.addEventListener('DOMContentLoaded', function(){
 	var mouseY = 0;
 
 	// @Model
-	var imX = 0;
-	var imY = 0;
-	var imscale = 1.0;
+	// var imX = 0;
+	// var imY = 0;
+	// var imscale = 1.0;
 
 	// @Todo
-	var keys = Object.keys(frameData);
-	for (var i = 0; i < keys.length; i++) {
-		var im = document.createElement('img');
-		im.id = keys[i];
-		im.src = frameData[keys[i]].filename;
-		dropdownContent.appendChild(im);
-	}
+	// var keys = Object.keys(frameData);
+	// for (var i = 0; i < keys.length; i++) {
+	// 	var im = document.createElement('img');
+	// 	im.id = keys[i];
+	// 	im.src = frameData[keys[i]].filename;
+	// 	dropdownContent.appendChild(im);
+	// }
 
 	// @View
 	// resize the canvas to fill browser window dynamically
@@ -84,8 +84,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	window.addEventListener('mousemove', onMouseMove);
 	canvas.addEventListener('mousedown', onMouseDown);
 	window.addEventListener('mouseup', onMouseUp);
-	solidBg.addEventListener('change', render);
-	transparency.addEventListener('input', render);
+	// solidBg.addEventListener('change', render);
+	// transparency.addEventListener('input', render);
 	document.getElementById('scaleUp').addEventListener('click', scaleUp);
 	document.getElementById('scaleDown').addEventListener('click', scaleDown);
 	scaleValue.addEventListener('change', scaleChange);
@@ -93,10 +93,10 @@ document.addEventListener('DOMContentLoaded', function(){
 	tokenHeight.addEventListener('input', heightChange);
 	sizeSelect.addEventListener('change', sizeChange);
 	saveBtn.addEventListener('click', saveImg);
-	uploadBtn.addEventListener('click', uploadImg);
-	uploadBg.addEventListener('click', clickUploadBg);
+	// uploadBtn.addEventListener('click', uploadImg);
+	// uploadBg.addEventListener('click', clickUploadBg);
 	fileField.addEventListener('change', chooseFile);
-	image.addEventListener('load', render);
+	// image.addEventListener('load', render);
 	document.getElementById('loadUrlBtn').addEventListener('click', loadUrl);
 	urlText.addEventListener('keyup', handleUrlTextEnter)
 	uploadBg.addEventListener('drop', handleFileDrop);
@@ -230,11 +230,11 @@ document.addEventListener('DOMContentLoaded', function(){
 		hideFileDialog();
 	}
 
-	function clickUploadBg(e) {
-		if (e.target == this) {
-			hideFileDialog();
-		}
-	}
+	// function clickUploadBg(e) {
+	// 	if (e.target == this) {
+	// 		hideFileDialog();
+	// 	}
+	// }
 
 	function uploadImg() {
 		showFileDialog();

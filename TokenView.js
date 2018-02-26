@@ -17,12 +17,8 @@ TokenView.prototype = {
     },
 
     createChildren: function () {
-        // cache the document object
-        // this.$container = $('.js-container');
-        // this.$addTaskButton = this.$container.find('.js-add-task-button');
-        // this.$taskTextBox = this.$container.find('.js-task-textbox');
-        // this.$tasksContainer = this.$container.find('.js-tasks-container');
-
+        // cache the document objects
+		// @TODO: Clean this up some, we are caching a lot of stuff
 		this.canvas = document.getElementById('canvas');
 		this.context = canvas.getContext('2d');
 		this.border = document.getElementById('border');
@@ -63,10 +59,14 @@ TokenView.prototype = {
     },
 
     setupHandlers: function () {
+		this.renderHandler = this.render.bind(this);
 		this.windowClickHandler = this.windowClick.bind(this);
 		this.selectBorderHandler = this.selectBorder.bind(this);
 		this.redrawFrameHandler = this.redrawFrame.bind(this);
 		this.openMenuHandler = this.openMenu.bind(this);
+		this.showFileDialogHandler = this.showFileDialog.bind(this);
+		this.hideFileDialogHandler = this.hideFileDialog.bind(this);
+		this.clickUploadBgHandler = this.clickUploadBg.bind(this);
 
         /**
         Handlers from Event Dispatcher
@@ -85,21 +85,13 @@ TokenView.prototype = {
         // this.$container.on('click', '.js-complete-task-button', this.completeTaskButtonHandler);
         // this.$container.on('click', '.js-delete-task-button', this.deleteTaskButtonHandler);
 
-        /**
-         * Event Dispatcher
-         */
-        // this.model.addTaskEvent.attach(this.addTaskHandler);
-        // this.model.addTaskEvent.attach(this.clearTaskTextBoxHandler);
-        // this.model.setTasksAsCompletedEvent.attach(this.setTasksAsCompletedHandler);
-        // this.model.deleteTasksEvent.attach(this.deleteTasksHandler);
-
-		// window.addEventListener('resize', resizeCanvas);
 		// window.addEventListener('load', resizeCanvas);
 		// window.addEventListener('mousemove', onMouseMove);
 		// canvas.addEventListener('mousedown', onMouseDown);
 		// window.addEventListener('mouseup', onMouseUp);
-		// solidBg.addEventListener('change', render);
-		// transparency.addEventListener('input', render);
+		this.solidBg.addEventListener('change', this.renderHandler);
+		this.transparency.addEventListener('input', this.renderHandler);
+		this.image.addEventListener('load', this.renderHandler);
 		// document.getElementById('scaleUp').addEventListener('click', scaleUp);
 		// document.getElementById('scaleDown').addEventListener('click', scaleDown);
 		// scaleValue.addEventListener('change', scaleChange);
@@ -107,12 +99,9 @@ TokenView.prototype = {
 		// tokenHeight.addEventListener('input', heightChange);
 		// sizeSelect.addEventListener('change', sizeChange);
 		// saveBtn.addEventListener('click', saveImg);
-		// uploadBtn.addEventListener('click', uploadImg);
-		// uploadBg.addEventListener('click', clickUploadBg);
+		this.uploadBtn.addEventListener('click', this.showFileDialogHandler);
+		this.uploadBg.addEventListener('click', this.clickUploadBgHandler);
 		// fileField.addEventListener('change', chooseFile);
-		// image.addEventListener('load', render);
-		// document.getElementById('loadUrlBtn').addEventListener('click', loadUrl);
-		// urlText.addEventListener('keyup', handleUrlTextEnter)
 		// uploadBg.addEventListener('drop', handleFileDrop);
 		// uploadBg.addEventListener('dragover', fileHoverStart);
 		// uploadBg.addEventListener('dragenter', fileHoverStart);
@@ -131,6 +120,16 @@ TokenView.prototype = {
 		frameColor.jscolor.onFineChange = this.redrawFrameHandler;
 		bgColor.jscolor.onFineChange = this.redrawFrameHandler;
 		this.redrawFrame();
+
+        /**
+         * Event Dispatcher
+         */
+        // this.model.addTaskEvent.attach(this.addTaskHandler);
+        // this.model.addTaskEvent.attach(this.clearTaskTextBoxHandler);
+        // this.model.setTasksAsCompletedEvent.attach(this.setTasksAsCompletedHandler);
+        // this.model.deleteTasksEvent.attach(this.deleteTasksHandler);
+
+		// window.addEventListener('resize', resizeCanvas);
         return this;
     },
 
@@ -169,12 +168,31 @@ TokenView.prototype = {
 		this.redrawFrame();
 	},
 
+	// Upload File Dialog
+	showFileDialog: function() {
+		this.uploadBg.hidden = false;
+	},
+
+	hideFileDialog: function() {
+		this.uploadBg.hidden = true;
+		this.fileField.value = ""
+		this.urlText.value = ""
+	},
+
+	clickUploadBg: function(e) {
+		if (e.target == this.uploadBg) {
+			this.hideFileDialog();
+		}
+	},
+
+	// Rendering functions
 	redrawFrame: function() {
 		this.updateFrame();
 		this.render();
 	},
 
 	updateFrame: function() {
+		// @TODO: is this Memory Leaking? Why do we create a new one every time?
 		this.finalFrame = document.createElement('canvas');
 		console.log(this.finalFrame);
 		this.finalFrame.width = border.width;
