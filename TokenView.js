@@ -79,6 +79,11 @@ TokenView.prototype = {
 		this.widthChangeHandler = this.widthChange.bind(this);
 		this.heightChangeHandler = this.heightChange.bind(this);
 		this.sizeChangeHandler = this.sizeChange.bind(this);
+		this.saveImageHandler = this.saveImage.bind(this);
+		this.chooseFileHandler = this.chooseFile.bind(this);
+		this.fileDropHandler = this.fileDrop.bind(this);
+		this.fileHoverStartHandler = this.fileHoverStart.bind(this);
+		this.fileHoverEndHandler = this.fileHoverEnd.bind(this);
 
         return this;
     },
@@ -96,18 +101,18 @@ TokenView.prototype = {
 		document.getElementById('scaleUp').addEventListener('click', this.scaleUpHandler);
 		document.getElementById('scaleDown').addEventListener('click', this.scaleDownHandler);
 		this.scaleValue.addEventListener('change', this.scaleChangeHandler);
-		tokenWidth.addEventListener('input', this.widthChangeHandler);
-		tokenHeight.addEventListener('input', this.heightChangeHandler);
-		sizeSelect.addEventListener('change', this.sizeChangeHandler);
-		// saveBtn.addEventListener('click', saveImg);
+		this.tokenWidth.addEventListener('input', this.widthChangeHandler);
+		this.tokenHeight.addEventListener('input', this.heightChangeHandler);
+		this.sizeSelect.addEventListener('change', this.sizeChangeHandler);
+		this.saveBtn.addEventListener('click', this.saveImageHandler);
 		this.uploadBtn.addEventListener('click', this.showFileDialogHandler);
 		this.uploadBg.addEventListener('click', this.clickUploadBgHandler);
-		// fileField.addEventListener('change', chooseFile);
-		// uploadBg.addEventListener('drop', handleFileDrop);
-		// uploadBg.addEventListener('dragover', fileHoverStart);
-		// uploadBg.addEventListener('dragenter', fileHoverStart);
-		// uploadBg.addEventListener('dragleave', fileHoverEnd);
-		// uploadBg.addEventListener('dragend', fileHoverEnd);
+		this.fileField.addEventListener('change', this.chooseFileHandler);
+		this.uploadBg.addEventListener('drop', this.fileDropHandler);
+		this.uploadBg.addEventListener('dragover', this.fileHoverStartHandler);
+		this.uploadBg.addEventListener('dragenter', this.fileHoverStartHandler);
+		this.uploadBg.addEventListener('dragleave', this.fileHoverEndHandler);
+		this.uploadBg.addEventListener('dragend', this.fileHoverEndHandler);
 		document.getElementById('dropbtn').addEventListener('click', this.openMenuHandler);
 		window.addEventListener('click', this.windowClickHandler);
 		var items = Array.from(document.getElementById("dropdown-content").children);
@@ -248,6 +253,68 @@ TokenView.prototype = {
 		}
 	},
 
+	// File Input/Output
+	fileDrop: function(e) {
+		pauseEvent(e);
+		// If dropped items aren't files, reject them
+		var dt = e.dataTransfer;
+		if (dt.items) {
+			// Use DataTransferItemList interface to access the file(s)
+			for (var i=0; i < dt.items.length; i++) {
+				if (dt.items[i].kind == "file") {
+					this.readImageFile(dt.items[i].getAsFile());
+				}
+			}
+		} else {
+			// Use DataTransfer interface to access the file(s)
+			for (var i=0; i < dt.files.length; i++) {
+				this.image.src = dt.files[i].name;
+			}  
+		}
+		this.hideFileDialog();
+		this.fileHoverEnd();
+	},
+
+	fileHoverStart: function(e) {
+		pauseEvent(e);
+		this.dropArea.classList.add('is-dragover');
+	},
+
+	fileHoverEnd: function() {
+		this.dropArea.classList.remove('is-dragover');
+	},
+
+	readImageFile: function(f) {
+		var r = new FileReader();
+		r.onload = function() {
+			this.image.src = r.result;
+		}.bind(this);
+		r.readAsDataURL(f);
+	},
+
+	chooseFile: function(e) {
+		var tgt = e.target || window.event.srcElement, files = tgt.files;
+		if (FileReader && files && files.length) {
+			this.readImageFile(files[0]);
+		}
+		else {
+			// TODO: Fill in error handling here
+			// fallback -- perhaps submit the input to an iframe and temporarily store
+			// them on the server until the user's session ends.
+		}
+		this.hideFileDialog();
+	},
+
+	saveImage: function() {
+		var a = document.createElement('a');
+		var img = this.offscreen.toDataURL("image/png");
+		a.download = "token.png";
+		a.href = img;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+	},
+
 	// Rendering functions
 	resizeCanvas: function() {
 		this.canvas.width = window.innerWidth;
@@ -263,7 +330,6 @@ TokenView.prototype = {
 	updateFrame: function() {
 		// @TODO: is this Memory Leaking? Why do we create a new one every time?
 		this.finalFrame = document.createElement('canvas');
-		console.log(this.finalFrame);
 		this.finalFrame.width = border.width;
 		this.finalFrame.height = border.height;
 		var ctx = this.finalFrame.getContext('2d');
