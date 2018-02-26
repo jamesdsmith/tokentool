@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	var image = document.getElementById('image');
 	var solidBg = document.getElementById('solidBackground');
 	var transparency = document.getElementById('transparency');
-	var tokenWidth = document.getElementById('tokenWidth');
-	var tokenHeight = document.getElementById('tokenHeight');
+	// var tokenWidth = document.getElementById('tokenWidth');
+	// var tokenHeight = document.getElementById('tokenHeight');
 	var sizeSelect = document.getElementById('sizeSelect');
 	var uploadBtn = document.getElementById('uploadBtn');
 	var saveBtn = document.getElementById('saveBtn');
@@ -49,14 +49,14 @@ document.addEventListener('DOMContentLoaded', function(){
 	var dropdownContent = document.getElementById('dropdown-content');
 	var scaleValue = document.getElementById('scaleValue');
 
-	var preview = document.getElementById('preview');
-	var prevctx = preview.getContext('2d');
-	var offscreen = document.createElement('canvas');
-	offscreen.width = tokenWidth.value;
-	offscreen.height = tokenHeight.value;
-	var offscreenCtx = offscreen.getContext('2d');
+	// var preview = document.getElementById('preview');
+	// var prevctx = preview.getContext('2d');
+	// var offscreen = document.createElement('canvas');
+	// offscreen.width = tokenWidth.value;
+	// offscreen.height = tokenHeight.value;
+	// var offscreenCtx = offscreen.getContext('2d');
 	
-	var finalFrame = document.createElement('canvas');
+	// var finalFrame = document.createElement('canvas');
 
 	// @Controller
 	var mouseDown = false;
@@ -106,17 +106,17 @@ document.addEventListener('DOMContentLoaded', function(){
 	uploadBg.addEventListener('dragend', fileHoverEnd);
 	document.getElementById('dropbtn').addEventListener('click', openMenu);
 	window.addEventListener('click', handleWindowClick);
-	var items = Array.from(document.getElementById("dropdown-content").children);
-	var i;
-	for (i = 0; i < items.length; i++) {
-		var item = items[i];
-		item.addEventListener('click', selectBorder);
-	}
-	border.addEventListener('load', redrawFrame);
-	mask.addEventListener('load', redrawFrame);
-	frameColor.jscolor.onFineChange = redrawFrame;
-	bgColor.jscolor.onFineChange = redrawFrame;
-	redrawFrame();
+	// var items = Array.from(document.getElementById("dropdown-content").children);
+	// var i;
+	// for (i = 0; i < items.length; i++) {
+	// 	var item = items[i];
+	// 	item.addEventListener('click', selectBorder);
+	// }
+	// border.addEventListener('load', redrawFrame);
+	// mask.addEventListener('load', redrawFrame);
+	// frameColor.jscolor.onFineChange = redrawFrame;
+	// bgColor.jscolor.onFineChange = redrawFrame;
+	// redrawFrame();
 
 	// @View
 	function showFileDialog() {
@@ -173,11 +173,11 @@ document.addEventListener('DOMContentLoaded', function(){
 		}
 	}
 
-	function redrawFrame(v) {
-		console.log("redraw frame");
-		updateFrame();
-		render();
-	}
+	// function redrawFrame(v) {
+	// 	console.log("redraw frame");
+	// 	updateFrame();
+	// 	render();
+	// }
 
 	function openMenu() {
 		document.getElementById("droplabel").classList.toggle("show");
@@ -185,13 +185,13 @@ document.addEventListener('DOMContentLoaded', function(){
 		document.getElementById("dropdown-content").classList.toggle("show");
 	}
 
-	function selectBorder(e) {
-		border.src = frameData[e.target.id].filename;
-		mask.src = frameData[e.target.id].maskname;
-		document.getElementById("dropimg").src = border.src;
-		updateFrame();
-		render();
-	}
+	// function selectBorder(e) {
+	// 	border.src = frameData[e.target.id].filename;
+	// 	mask.src = frameData[e.target.id].maskname;
+	// 	document.getElementById("dropimg").src = border.src;
+	// 	updateFrame();
+	// 	render();
+	// }
 
 	function fileHoverStart(e) {
 		pauseEvent(e);
@@ -334,63 +334,63 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 
 	// @View
-	function updateFrame() {
-		finalFrame = document.createElement('canvas');
-		finalFrame.width = border.width;
-		finalFrame.height = border.height;
-		var ctx = finalFrame.getContext('2d');
-		ctx.rect(0, 0, border.width, border.height);
-		ctx.fillStyle = getColor(frameColor);
-		ctx.fill();
-		ctx.globalCompositeOperation = "multiply";
-		ctx.drawImage(border, 0, 0, border.width, border.height);
-		ctx.globalCompositeOperation = "destination-in";
-		ctx.drawImage(border, 0, 0, border.width, border.height);
-		ctx.globalCompositeOperation = "source-over";
-	}
+	// function updateFrame() {
+	// 	finalFrame = document.createElement('canvas');
+	// 	finalFrame.width = border.width;
+	// 	finalFrame.height = border.height;
+	// 	var ctx = finalFrame.getContext('2d');
+	// 	ctx.rect(0, 0, border.width, border.height);
+	// 	ctx.fillStyle = getColor(frameColor);
+	// 	ctx.fill();
+	// 	ctx.globalCompositeOperation = "multiply";
+	// 	ctx.drawImage(border, 0, 0, border.width, border.height);
+	// 	ctx.globalCompositeOperation = "destination-in";
+	// 	ctx.drawImage(border, 0, 0, border.width, border.height);
+	// 	ctx.globalCompositeOperation = "source-over";
+	// }
 
-	function getColor(elem) {
-		return elem.jscolor.toRGBString();
-	}
+	// function getColor(elem) {
+	// 	return elem.jscolor.toRGBString();
+	// }
 
 	function render() {
-		var w = canvas.width;
-		var h = canvas.height;
-		var scaleX = tokenWidth.value / finalFrame.width;
-		var scaleY = tokenHeight.value / finalFrame.height;
-		var brw = finalFrame.width * scaleX;
-		var brh = finalFrame.height * scaleY;
-		var imw = image.width*imscale;
-		var imh = image.height*imscale;
+		// var w = canvas.width;
+		// var h = canvas.height;
+		// var scaleX = tokenWidth.value / finalFrame.width;
+		// var scaleY = tokenHeight.value / finalFrame.height;
+		// var brw = finalFrame.width * scaleX;
+		// var brh = finalFrame.height * scaleY;
+		// var imw = image.width*imscale;
+		// var imh = image.height*imscale;
 
-		// Draw the main canvas
-		context.clearRect(0, 0, canvas.width, canvas.height);
-		context.drawImage(image, w/2 - imw/2 + imX, h/2 - imh/2 + imY, imw, imh);
-		context.drawImage(finalFrame, w/2 - brw/2, h/2 - brh/2, brw, brh);
+		// // Draw the main canvas
+		// context.clearRect(0, 0, canvas.width, canvas.height);
+		// context.drawImage(image, w/2 - imw/2 + imX, h/2 - imh/2 + imY, imw, imh);
+		// context.drawImage(finalFrame, w/2 - brw/2, h/2 - brh/2, brw, brh);
 
-		// Initially draw preview to an offscreen canvas
-		w = tokenWidth.value;
-		h = tokenHeight.value;
-		ps = w / brw;
-		offscreenCtx.clearRect(0, 0, w, h);
-		if (solidBg.checked) {
-			offscreenCtx.fillStyle = getColor(bgColor);
-			offscreenCtx.rect(0, 0, w, h);
-			offscreenCtx.fill();
-			offscreenCtx.globalCompositeOperation = 'destination-atop';
-			offscreenCtx.drawImage(mask, 0, 0, w, h);
-		}
-		offscreenCtx.globalCompositeOperation = 'source-over';
-		offscreenCtx.drawImage(image, w/2 - imw*ps/2 + imX*ps, h/2 - imh*ps/2 + imY*ps, imw*ps, imh*ps);
-		offscreenCtx.globalCompositeOperation = 'destination-in';
-		offscreenCtx.drawImage(mask, 0, 0, w, h);
+		// // Initially draw preview to an offscreen canvas
+		// w = tokenWidth.value;
+		// h = tokenHeight.value;
+		// ps = w / brw;
+		// offscreenCtx.clearRect(0, 0, w, h);
+		// if (solidBg.checked) {
+		// 	offscreenCtx.fillStyle = getColor(bgColor);
+		// 	offscreenCtx.rect(0, 0, w, h);
+		// 	offscreenCtx.fill();
+		// 	offscreenCtx.globalCompositeOperation = 'destination-atop';
+		// 	offscreenCtx.drawImage(mask, 0, 0, w, h);
+		// }
+		// offscreenCtx.globalCompositeOperation = 'source-over';
+		// offscreenCtx.drawImage(image, w/2 - imw*ps/2 + imX*ps, h/2 - imh*ps/2 + imY*ps, imw*ps, imh*ps);
+		// offscreenCtx.globalCompositeOperation = 'destination-in';
+		// offscreenCtx.drawImage(mask, 0, 0, w, h);
 
-		offscreenCtx.globalCompositeOperation = 'source-over';
-		offscreenCtx.drawImage(finalFrame, 0, 0, w, h);
+		// offscreenCtx.globalCompositeOperation = 'source-over';
+		// offscreenCtx.drawImage(finalFrame, 0, 0, w, h);
 
-		// Draw the preview frame
-		prevctx.clearRect(0, 0, w, h);
-		prevctx.globalAlpha = transparency.value / 100;
-		prevctx.drawImage(offscreen, 0, 0, preview.width, preview.height);
+		// // Draw the preview frame
+		// prevctx.clearRect(0, 0, w, h);
+		// prevctx.globalAlpha = transparency.value / 100;
+		// prevctx.drawImage(offscreen, 0, 0, preview.width, preview.height);
 	}
 });
