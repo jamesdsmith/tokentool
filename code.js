@@ -104,8 +104,8 @@ document.addEventListener('DOMContentLoaded', function(){
 	uploadBg.addEventListener('dragenter', fileHoverStart);
 	uploadBg.addEventListener('dragleave', fileHoverEnd);
 	uploadBg.addEventListener('dragend', fileHoverEnd);
-	document.getElementById('dropbtn').addEventListener('click', openMenu);
-	window.addEventListener('click', handleWindowClick);
+	// document.getElementById('dropbtn').addEventListener('click', openMenu);
+	// window.addEventListener('click', handleWindowClick);
 	// var items = Array.from(document.getElementById("dropdown-content").children);
 	// var i;
 	// for (i = 0; i < items.length; i++) {
@@ -130,20 +130,20 @@ document.addEventListener('DOMContentLoaded', function(){
 	}
 
 	// @Controller
-	function handleWindowClick(e) {
-		if (!e.target.matches('.dropbtn-click')) {
-			document.getElementById("droplabel").classList.remove("show");
-			document.getElementById("droparrow").classList.remove("show");
-			var dropdowns = document.getElementsByClassName("dropdown-content");
-			var i;
-			for (i = 0; i < dropdowns.length; i++) {
-				var openDropdown = dropdowns[i];
-				if (openDropdown.classList.contains('show')) {
-					openDropdown.classList.remove('show');
-				}
-			}
-		}
-	}
+	// function handleWindowClick(e) {
+	// 	if (!e.target.matches('.dropbtn-click')) {
+	// 		document.getElementById("droplabel").classList.remove("show");
+	// 		document.getElementById("droparrow").classList.remove("show");
+	// 		var dropdowns = document.getElementsByClassName("dropdown-content");
+	// 		var i;
+	// 		for (i = 0; i < dropdowns.length; i++) {
+	// 			var openDropdown = dropdowns[i];
+	// 			if (openDropdown.classList.contains('show')) {
+	// 				openDropdown.classList.remove('show');
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	function handleFileDrop(e) {
 		pauseEvent(e);
@@ -179,11 +179,11 @@ document.addEventListener('DOMContentLoaded', function(){
 	// 	render();
 	// }
 
-	function openMenu() {
-		document.getElementById("droplabel").classList.toggle("show");
-		document.getElementById("droparrow").classList.toggle("show");
-		document.getElementById("dropdown-content").classList.toggle("show");
-	}
+	// function openMenu() {
+	// 	document.getElementById("droplabel").classList.toggle("show");
+	// 	document.getElementById("droparrow").classList.toggle("show");
+	// 	document.getElementById("dropdown-content").classList.toggle("show");
+	// }
 
 	// function selectBorder(e) {
 	// 	border.src = frameData[e.target.id].filename;

@@ -63,12 +63,10 @@ TokenView.prototype = {
     },
 
     setupHandlers: function () {
-        // this.addTaskButtonHandler = this.addTaskButton.bind(this);
-        // this.selectOrUnselectTaskHandler = this.selectOrUnselectTask.bind(this);
-        // this.completeTaskButtonHandler = this.completeTaskButton.bind(this);
-        // this.deleteTaskButtonHandler = this.deleteTaskButton.bind(this);
-		this.redrawFrameHandler = this.redrawFrame.bind(this);
+		this.windowClickHandler = this.windowClick.bind(this);
 		this.selectBorderHandler = this.selectBorder.bind(this);
+		this.redrawFrameHandler = this.redrawFrame.bind(this);
+		this.openMenuHandler = this.openMenu.bind(this);
 
         /**
         Handlers from Event Dispatcher
@@ -120,8 +118,8 @@ TokenView.prototype = {
 		// uploadBg.addEventListener('dragenter', fileHoverStart);
 		// uploadBg.addEventListener('dragleave', fileHoverEnd);
 		// uploadBg.addEventListener('dragend', fileHoverEnd);
-		// document.getElementById('dropbtn').addEventListener('click', openMenu);
-		// window.addEventListener('click', handleWindowClick);
+		document.getElementById('dropbtn').addEventListener('click', this.openMenuHandler);
+		window.addEventListener('click', this.windowClickHandler);
 		var items = Array.from(document.getElementById("dropdown-content").children);
 		var i;
 		for (i = 0; i < items.length; i++) {
@@ -140,7 +138,30 @@ TokenView.prototype = {
 		this.render();
 	},
 
+	// @TODO: Move this to Controller?
+	windowClick: function(e) {
+		if (!e.target.matches('.dropbtn-click')) {
+			document.getElementById("droplabel").classList.remove("show");
+			document.getElementById("droparrow").classList.remove("show");
+			var dropdowns = document.getElementsByClassName("dropdown-content");
+			var i;
+			for (i = 0; i < dropdowns.length; i++) {
+				var openDropdown = dropdowns[i];
+				if (openDropdown.classList.contains('show')) {
+					openDropdown.classList.remove('show');
+				}
+			}
+		}
+	},
+
 	// @TODO: Move this to model?
+	// Dropdown border selection menu
+	openMenu: function() {
+		document.getElementById("droplabel").classList.toggle("show");
+		document.getElementById("droparrow").classList.toggle("show");
+		document.getElementById("dropdown-content").classList.toggle("show");
+	},
+
 	selectBorder: function(e) {
 		this.border.src = this.model.frameData[e.target.id].filename;
 		this.mask.src = this.model.frameData[e.target.id].maskname;
