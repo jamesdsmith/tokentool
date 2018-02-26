@@ -144,8 +144,11 @@ TokenView.prototype = {
 			pageX: e.pageX,
 			pageY: e.pageY
 		});
-		e = e || window.event;
-		pauseEvent(e);
+		// Consume the event if it is not some type of input/control
+		if (!e.target.type) {
+			e = e || window.event;
+			pauseEvent(e);
+		}
 	},
 
 	mouseUp: function() {
