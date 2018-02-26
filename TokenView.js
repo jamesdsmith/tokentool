@@ -1,10 +1,8 @@
 var TokenView = function (model) {
     this.model = model;
-    this.addTaskEvent = new Event(this);
-    this.selectTaskEvent = new Event(this);
-    this.unselectTaskEvent = new Event(this);
-    this.completeTaskEvent = new Event(this);
-    this.deleteTaskEvent = new Event(this);
+    this.mouseMoveEvent = new Event(this);
+    this.mouseUpEvent = new Event(this);
+    this.mouseDownEvent = new Event(this);
 
     this.init();
 };
@@ -60,7 +58,11 @@ TokenView.prototype = {
 
     setupHandlers: function () {
 		this.renderHandler = this.render.bind(this);
+		this.resizeCanvasHandler = this.resizeCanvas.bind(this);
 		this.windowClickHandler = this.windowClick.bind(this);
+		this.mouseMoveHandler = this.mouseMove.bind(this);
+		this.mouseUpHandler = this.mouseUp.bind(this);
+		this.mouseDownHandler = this.mouseDown.bind(this);
 		this.selectBorderHandler = this.selectBorder.bind(this);
 		this.redrawFrameHandler = this.redrawFrame.bind(this);
 		this.openMenuHandler = this.openMenu.bind(this);
@@ -68,27 +70,16 @@ TokenView.prototype = {
 		this.hideFileDialogHandler = this.hideFileDialog.bind(this);
 		this.clickUploadBgHandler = this.clickUploadBg.bind(this);
 
-        /**
-        Handlers from Event Dispatcher
-        */
-        // this.addTaskHandler = this.addTask.bind(this);
-        // this.clearTaskTextBoxHandler = this.clearTaskTextBox.bind(this);
-        // this.setTasksAsCompletedHandler = this.setTasksAsCompleted.bind(this);
-        // this.deleteTasksHandler = this.deleteTasks.bind(this);
-
         return this;
     },
 
     enable: function () {
-        // this.$addTaskButton.click(this.addTaskButtonHandler);
-        // this.$container.on('click', '.js-task', this.selectOrUnselectTaskHandler);
-        // this.$container.on('click', '.js-complete-task-button', this.completeTaskButtonHandler);
-        // this.$container.on('click', '.js-delete-task-button', this.deleteTaskButtonHandler);
-
-		// window.addEventListener('load', resizeCanvas);
-		// window.addEventListener('mousemove', onMouseMove);
-		// canvas.addEventListener('mousedown', onMouseDown);
-		// window.addEventListener('mouseup', onMouseUp);
+		window.addEventListener('resize', this.resizeCanvasHandler);
+		// @TODO: Investigate if this is causing the flicker at startup
+		window.addEventListener('load', this.resizeCanvasHandler);
+		window.addEventListener('mousemove', this.mouseMoveHandler);
+		this.canvas.addEventListener('mousedown', this.mouseDownHandler);
+		window.addEventListener('mouseup', this.mouseUpHandler);
 		this.solidBg.addEventListener('change', this.renderHandler);
 		this.transparency.addEventListener('input', this.renderHandler);
 		this.image.addEventListener('load', this.renderHandler);
@@ -121,15 +112,9 @@ TokenView.prototype = {
 		bgColor.jscolor.onFineChange = this.redrawFrameHandler;
 		this.redrawFrame();
 
-        /**
-         * Event Dispatcher
-         */
-        // this.model.addTaskEvent.attach(this.addTaskHandler);
-        // this.model.addTaskEvent.attach(this.clearTaskTextBoxHandler);
-        // this.model.setTasksAsCompletedEvent.attach(this.setTasksAsCompletedHandler);
-        // this.model.deleteTasksEvent.attach(this.deleteTasksHandler);
+		// Event Dispatcher
+		this.model.dataChangedEvent.attach(this.renderHandler);
 
-		// window.addEventListener('resize', resizeCanvas);
         return this;
     },
 
@@ -137,7 +122,8 @@ TokenView.prototype = {
 		this.render();
 	},
 
-	// @TODO: Move this to Controller?
+	// @TODO: Move all of these to Controller?
+	// Mouse Events
 	windowClick: function(e) {
 		if (!e.target.matches('.dropbtn-click')) {
 			document.getElementById("droplabel").classList.remove("show");
@@ -151,6 +137,28 @@ TokenView.prototype = {
 				}
 			}
 		}
+	},
+
+	mouseMove: function(e) {
+		this.mouseMoveEvent.notify({
+			pageX: e.pageX,
+			pageY: e.pageY
+		});
+		e = e || window.event;
+		pauseEvent(e);
+	},
+
+	mouseUp: function() {
+		this.mouseUpEvent.notify();
+	},
+
+	mouseDown: function(e) {
+		this.mouseDownEvent.notify({
+			pageX: e.pageX,
+			pageY: e.pageY
+		});
+		e = e || window.event;
+		pauseEvent(e);
 	},
 
 	// @TODO: Move this to model?
@@ -186,6 +194,12 @@ TokenView.prototype = {
 	},
 
 	// Rendering functions
+	resizeCanvas: function() {
+		this.canvas.width = window.innerWidth;
+		this.canvas.height = window.innerHeight;
+		this.render(); 
+	},
+
 	redrawFrame: function() {
 		this.updateFrame();
 		this.render();

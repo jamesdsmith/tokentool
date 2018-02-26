@@ -79,11 +79,11 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	// @View
 	// resize the canvas to fill browser window dynamically
-	window.addEventListener('resize', resizeCanvas);
-	window.addEventListener('load', resizeCanvas);
-	window.addEventListener('mousemove', onMouseMove);
-	canvas.addEventListener('mousedown', onMouseDown);
-	window.addEventListener('mouseup', onMouseUp);
+	// window.addEventListener('resize', resizeCanvas);
+	// window.addEventListener('load', resizeCanvas);
+	// window.addEventListener('mousemove', onMouseMove);
+	// canvas.addEventListener('mousedown', onMouseDown);
+	// window.addEventListener('mouseup', onMouseUp);
 	// solidBg.addEventListener('change', render);
 	// transparency.addEventListener('input', render);
 	document.getElementById('scaleUp').addEventListener('click', scaleUp);
@@ -119,9 +119,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	// redrawFrame();
 
 	// @View
-	function showFileDialog() {
-		uploadBg.hidden = false;
-	}
+	// function showFileDialog() {
+	// 	uploadBg.hidden = false;
+	// }
 
 	function hideFileDialog() {
 		uploadBg.hidden = true;
@@ -236,9 +236,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	// 	}
 	// }
 
-	function uploadImg() {
-		showFileDialog();
-	}
+	// function uploadImg() {
+	// 	showFileDialog();
+	// }
 
 	function saveImg() {
 		var a = document.createElement('a');
@@ -293,37 +293,37 @@ document.addEventListener('DOMContentLoaded', function(){
 		render();
 	}
 
-	function resizeCanvas() {
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
-		render(); 
-	}
+	// function resizeCanvas() {
+	// 	canvas.width = window.innerWidth;
+	// 	canvas.height = window.innerHeight;
+	// 	render(); 
+	// }
 
-	function onMouseDown(e) {
-		mouseDown = true;
-		mouseX = e.pageX;
-		mouseY = e.pageY;
-		e = e || window.event;
-		pauseEvent(e);
-	}
+	// function onMouseDown(e) {
+	// 	mouseDown = true;
+	// 	mouseX = e.pageX;
+	// 	mouseY = e.pageY;
+	// 	e = e || window.event;
+	// 	pauseEvent(e);
+	// }
 
-	function onMouseUp(e) {
-		mouseDown = false;
-	}
+	// function onMouseUp(e) {
+	// 	mouseDown = false;
+	// }
 
-	function onMouseMove(e) {
-		if (mouseDown) {
-			var deltaX = e.pageX - mouseX;
-			var deltaY = e.pageY - mouseY;
-			mouseX = e.pageX;
-			mouseY = e.pageY;
-			imX += deltaX;
-			imY += deltaY;
-			render();
-			e = e || window.event;
-			pauseEvent(e);
-		}
-	}
+	// function onMouseMove(e) {
+	// 	if (mouseDown) {
+	// 		var deltaX = e.pageX - mouseX;
+	// 		var deltaY = e.pageY - mouseY;
+	// 		mouseX = e.pageX;
+	// 		mouseY = e.pageY;
+	// 		imX += deltaX;
+	// 		imY += deltaY;
+	// 		render();
+	// 		e = e || window.event;
+	// 		pauseEvent(e);
+	// 	}
+	// }
 
 	function pauseEvent(e){
 		if(e.stopPropagation) e.stopPropagation();
