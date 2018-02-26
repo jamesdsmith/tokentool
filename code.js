@@ -86,9 +86,9 @@ document.addEventListener('DOMContentLoaded', function(){
 	// window.addEventListener('mouseup', onMouseUp);
 	// solidBg.addEventListener('change', render);
 	// transparency.addEventListener('input', render);
-	document.getElementById('scaleUp').addEventListener('click', scaleUp);
-	document.getElementById('scaleDown').addEventListener('click', scaleDown);
-	scaleValue.addEventListener('change', scaleChange);
+	// document.getElementById('scaleUp').addEventListener('click', scaleUp);
+	// document.getElementById('scaleDown').addEventListener('click', scaleDown);
+	// scaleValue.addEventListener('change', scaleChange);
 	tokenWidth.addEventListener('input', widthChange);
 	tokenHeight.addEventListener('input', heightChange);
 	sizeSelect.addEventListener('change', sizeChange);

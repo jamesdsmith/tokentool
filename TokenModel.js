@@ -31,6 +31,7 @@ var TokenModel = function () {
 	this.imscale = 1.0;
 
     this.dataChangedEvent = new Event(this);
+    this.scaleChangeEvent = new Event(this);
 };
 
 TokenModel.prototype = {
@@ -42,6 +43,9 @@ TokenModel.prototype = {
 
 	setImageScale: function(scale) {
 		this.imscale = scale;
-		this.dataChangedEvent.notify();
+		if (this.imscale < 0) {
+			this.imscale = 0;
+		}
+		this.scaleChangeEvent.notify();
 	},
 };

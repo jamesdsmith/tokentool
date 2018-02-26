@@ -19,6 +19,9 @@ TokenController.prototype = {
 		this.mouseMoveHandler = this.mouseMove.bind(this);
 		this.mouseUpHandler = this.mouseUp.bind(this);
 		this.mouseDownHandler = this.mouseDown.bind(this);
+		this.scaleUpHandler = this.scaleUp.bind(this);
+		this.scaleDownHandler = this.scaleDown.bind(this);
+		this.scaleChangeHandler = this.scaleChange.bind(this);
         return this;
     },
 
@@ -26,6 +29,9 @@ TokenController.prototype = {
 		this.view.mouseMoveEvent.attach(this.mouseMoveHandler);
 		this.view.mouseUpEvent.attach(this.mouseUpHandler);
 		this.view.mouseDownEvent.attach(this.mouseDownHandler);
+		this.view.scaleUpEvent.attach(this.scaleUpHandler);
+		this.view.scaleDownEvent.attach(this.scaleDownHandler);
+		this.view.scaleChangeEvent.attach(this.scaleChangeHandler);
         return this;
     },
 
@@ -49,5 +55,17 @@ TokenController.prototype = {
 		this.isMouseDown = true;
 		this.mouseX = args.pageX;
 		this.mouseY = args.pageY;
+	},
+
+	scaleUp: function() {
+		this.model.setImageScale(this.model.imscale + 0.1);
+	},
+
+	scaleDown: function() {
+		this.model.setImageScale(this.model.imscale - 0.1);
+	},
+
+	scaleChange: function(sender, args) {
+		this.model.setImageScale(parseFloat(args.value));
 	},
 };

@@ -3,6 +3,9 @@ var TokenView = function (model) {
     this.mouseMoveEvent = new Event(this);
     this.mouseUpEvent = new Event(this);
     this.mouseDownEvent = new Event(this);
+	this.scaleUpEvent = new Event(this);
+	this.scaleDownEvent = new Event(this);
+	this.scaleChangeEvent = new Event(this);
 
     this.init();
 };
@@ -69,6 +72,10 @@ TokenView.prototype = {
 		this.showFileDialogHandler = this.showFileDialog.bind(this);
 		this.hideFileDialogHandler = this.hideFileDialog.bind(this);
 		this.clickUploadBgHandler = this.clickUploadBg.bind(this);
+		this.scaleUpHandler = this.scaleUp.bind(this);
+		this.scaleDownHandler = this.scaleDown.bind(this);
+		this.scaleChangeHandler = this.scaleChange.bind(this);
+		this.updateScaleHandler = this.updateScale.bind(this);
 
         return this;
     },
@@ -83,9 +90,9 @@ TokenView.prototype = {
 		this.solidBg.addEventListener('change', this.renderHandler);
 		this.transparency.addEventListener('input', this.renderHandler);
 		this.image.addEventListener('load', this.renderHandler);
-		// document.getElementById('scaleUp').addEventListener('click', scaleUp);
-		// document.getElementById('scaleDown').addEventListener('click', scaleDown);
-		// scaleValue.addEventListener('change', scaleChange);
+		document.getElementById('scaleUp').addEventListener('click', this.scaleUpHandler);
+		document.getElementById('scaleDown').addEventListener('click', this.scaleDownHandler);
+		this.scaleValue.addEventListener('change', this.scaleChangeHandler);
 		// tokenWidth.addEventListener('input', widthChange);
 		// tokenHeight.addEventListener('input', heightChange);
 		// sizeSelect.addEventListener('change', sizeChange);
@@ -114,6 +121,7 @@ TokenView.prototype = {
 
 		// Event Dispatcher
 		this.model.dataChangedEvent.attach(this.renderHandler);
+		this.model.scaleChangeEvent.attach(this.updateScaleHandler);
 
         return this;
     },
@@ -162,6 +170,23 @@ TokenView.prototype = {
 		});
 		e = e || window.event;
 		pauseEvent(e);
+	},
+
+	scaleUp: function() {
+		this.scaleUpEvent.notify();
+	},
+
+	scaleDown: function() {
+		this.scaleDownEvent.notify();
+	},
+
+	scaleChange: function() {
+		this.scaleChangeEvent.notify({value: scaleValue.value});
+	},
+
+	updateScale: function() {
+		this.scaleValue.value = this.model.imscale.toFixed(2);
+		this.render();
 	},
 
 	// @TODO: Move this to model?
