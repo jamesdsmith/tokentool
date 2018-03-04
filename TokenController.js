@@ -22,6 +22,7 @@ TokenController.prototype = {
 		this.scaleUpHandler = this.scaleUp.bind(this);
 		this.scaleDownHandler = this.scaleDown.bind(this);
 		this.scaleChangeHandler = this.scaleChange.bind(this);
+		this.tokenSizeChangeHandler = this.tokenSizeChange.bind(this);
         return this;
     },
 
@@ -32,6 +33,7 @@ TokenController.prototype = {
 		this.view.scaleUpEvent.attach(this.scaleUpHandler);
 		this.view.scaleDownEvent.attach(this.scaleDownHandler);
 		this.view.scaleChangeEvent.attach(this.scaleChangeHandler);
+		this.view.tokenSizeChangeEvent.attach(this.tokenSizeChangeHandler);
         return this;
     },
 
@@ -66,6 +68,10 @@ TokenController.prototype = {
 	},
 
 	scaleChange: function(sender, args) {
-		this.model.setImageScale(parseFloat(args.value));
+		this.model.setImageScale(args.value);
 	},
+
+	tokenSizeChange: function(sender, args) {
+		this.view.changeTokenSize(args.width, args.height);
+	}
 };

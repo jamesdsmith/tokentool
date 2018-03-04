@@ -6,6 +6,7 @@ var TokenView = function (model) {
 	this.scaleUpEvent = new Event(this);
 	this.scaleDownEvent = new Event(this);
 	this.scaleChangeEvent = new Event(this);
+	this.tokenSizeChangeEvent = new Event(this);
 
     this.init();
 };
@@ -190,7 +191,9 @@ TokenView.prototype = {
 	},
 
 	scaleChange: function() {
-		this.scaleChangeEvent.notify({value: scaleValue.value});
+		this.scaleChangeEvent.notify({
+			value: parseFloat(scaleValue.value)
+		});
 	},
 
 	updateScale: function() {
@@ -200,24 +203,31 @@ TokenView.prototype = {
 
 	// Changing the token size UI
 	sizeChange: function() {
-		this.tokenWidth.value = this.sizeSelect.value;
-		this.tokenHeight.value = this.sizeSelect.value;
-		this.offscreen.width = this.tokenWidth.value;
-		this.offscreen.height = this.tokenHeight.value;
-		this.render();
+		this.tokenSizeChangeEvent.notify({
+			width: this.sizeSelect.value,
+			height: this.sizeSelect.value
+		});
 	},
 
 	widthChange: function() {
-		this.tokenHeight.value = this.tokenWidth.value;
-		this.offscreen.width = this.tokenWidth.value;
-		this.offscreen.height = this.tokenHeight.value;
-		this.render();
+		this.tokenSizeChangeEvent.notify({
+			width: this.tokenWidth.value,
+			height: this.tokenWidth.value
+		});
 	},
 
 	heightChange: function() {
-		this.tokenWidth.value = this.tokenHeight.value;
-		this.offscreen.width = this.tokenWidth.value;
-		this.offscreen.height = this.tokenHeight.value;
+		this.tokenSizeChangeEvent.notify({
+			width: this.tokenHeight.value,
+			height: this.tokenHeight.value
+		});
+	},
+
+	changeTokenSize: function(width, height) {
+		this.tokenWidth.value = width;
+		this.tokenHeight.value = height;
+		this.offscreen.width = width;
+		this.offscreen.height = height;
 		this.render();
 	},
 
@@ -328,11 +338,10 @@ TokenView.prototype = {
 	},
 
 	updateFrame: function() {
-		// @TODO: is this Memory Leaking? Why do we create a new one every time?
-		this.finalFrame = document.createElement('canvas');
 		this.finalFrame.width = border.width;
 		this.finalFrame.height = border.height;
 		var ctx = this.finalFrame.getContext('2d');
+		ctx.clearRect(0, 0, this.finalFrame.width, this.finalFrame.height);
 		ctx.rect(0, 0, border.width, border.height);
 		ctx.fillStyle = this.getColor(frameColor);
 		ctx.fill();
