@@ -8,6 +8,9 @@ var TokenView = function (model) {
 	this.scaleChangeEvent = new Event(this);
 	this.tokenSizeChangeEvent = new Event(this);
 	this.selectBorderEvent = new Event(this);
+	this.fileDropEvent = new Event(this);
+	this.chooseFileEvent = new Event(this);
+	this.saveImageEvent = new Event(this);
 
     this.init();
 };
@@ -223,6 +226,22 @@ TokenView.prototype = {
 		});
 	},
 
+	fileDrop: function(e) {
+		pauseEvent(e);
+		this.fileDropEvent.notify({ dt: e.dataTransfer });
+		this.hideFileDialog();
+		this.fileHoverEnd();
+	},
+
+	chooseFile: function(e) {
+		this.chooseFileEvent.notify({ target: e.target || window.event.srcElement });
+		this.hideFileDialog();
+	},
+
+	saveImage: function() {
+		this.saveImageEvent.notify();
+	},
+
 	changeTokenSize: function(width, height) {
 		this.tokenWidth.value = width;
 		this.tokenHeight.value = height;
@@ -263,40 +282,6 @@ TokenView.prototype = {
 	},
 
 	// File Input/Output
-	fileDrop: function(e) {
-		pauseEvent(e);
-		// If dropped items aren't files, reject them
-		var dt = e.dataTransfer;
-		if (dt.items) {
-			// Use DataTransferItemList interface to access the file(s)
-			for (var i=0; i < dt.items.length; i++) {
-				if (dt.items[i].kind == "file") {
-					this.readImageFile(dt.items[i].getAsFile());
-				}
-			}
-		} else {
-			// Use DataTransfer interface to access the file(s)
-			for (var i=0; i < dt.files.length; i++) {
-				this.image.src = dt.files[i].name;
-			}  
-		}
-		this.hideFileDialog();
-		this.fileHoverEnd();
-	},
-
-	chooseFile: function(e) {
-		var tgt = e.target || window.event.srcElement, files = tgt.files;
-		if (FileReader && files && files.length) {
-			this.readImageFile(files[0]);
-		}
-		else {
-			// TODO: Fill in error handling here
-			// fallback -- perhaps submit the input to an iframe and temporarily store
-			// them on the server until the user's session ends.
-		}
-		this.hideFileDialog();
-	},
-
 	fileHoverStart: function(e) {
 		pauseEvent(e);
 		this.dropArea.classList.add('is-dragover');
@@ -306,22 +291,12 @@ TokenView.prototype = {
 		this.dropArea.classList.remove('is-dragover');
 	},
 
-	readImageFile: function(f) {
-		var r = new FileReader();
-		r.onload = function() {
-			this.image.src = r.result;
-		}.bind(this);
-		r.readAsDataURL(f);
+	setTokenImage: function(newimg) {
+		this.image.src = newimg;
 	},
 
-	saveImage: function() {
-		var a = document.createElement('a');
-		var img = this.offscreen.toDataURL("image/png");
-		a.download = "token.png";
-		a.href = img;
-		document.body.appendChild(a);
-		a.click();
-		document.body.removeChild(a);
+	getFinalToken: function() {
+		return this.offscreen.toDataURL("image/png");
 	},
 
 	// Rendering functions
