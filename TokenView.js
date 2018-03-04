@@ -7,6 +7,7 @@ var TokenView = function (model) {
 	this.scaleDownEvent = new Event(this);
 	this.scaleChangeEvent = new Event(this);
 	this.tokenSizeChangeEvent = new Event(this);
+	this.selectBorderEvent = new Event(this);
 
     this.init();
 };
@@ -240,8 +241,14 @@ TokenView.prototype = {
 	},
 
 	selectBorder: function(e) {
-		this.border.src = this.model.frameData[e.target.id].filename;
-		this.mask.src = this.model.frameData[e.target.id].maskname;
+		this.selectBorderEvent.notify({
+			id: e.target.id
+		});
+	},
+
+	changeBorder: function() {
+		this.border.src = this.model.frameData[this.model.borderId].filename;
+		this.mask.src = this.model.frameData[this.model.borderId].maskname;
 		document.getElementById("dropimg").src = border.src;
 		this.redrawFrame();
 	},

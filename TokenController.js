@@ -23,6 +23,7 @@ TokenController.prototype = {
 		this.scaleDownHandler = this.scaleDown.bind(this);
 		this.scaleChangeHandler = this.scaleChange.bind(this);
 		this.tokenSizeChangeHandler = this.tokenSizeChange.bind(this);
+		this.selectBorderHandler = this.selectBorder.bind(this);
         return this;
     },
 
@@ -34,6 +35,7 @@ TokenController.prototype = {
 		this.view.scaleDownEvent.attach(this.scaleDownHandler);
 		this.view.scaleChangeEvent.attach(this.scaleChangeHandler);
 		this.view.tokenSizeChangeEvent.attach(this.tokenSizeChangeHandler);
+		this.view.selectBorderEvent.attach(this.selectBorderHandler);
         return this;
     },
 
@@ -73,5 +75,10 @@ TokenController.prototype = {
 
 	tokenSizeChange: function(sender, args) {
 		this.view.changeTokenSize(args.width, args.height);
-	}
+	},
+
+	selectBorder: function(sender, args) {
+		this.model.borderId = args.id;
+		this.view.changeBorder();
+	},
 };
