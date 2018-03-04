@@ -140,8 +140,9 @@ TokenView.prototype = {
 		this.render();
 	},
 
-	// @TODO: Move all of these to Controller?
-	// Mouse Events
+	// User Interface Events
+	// These events get sent off to the controller, which updates the model and
+	// potentially updates the view as well
 	windowClick: function(e) {
 		if (!e.target.matches('.dropbtn-click')) {
 			document.getElementById("droplabel").classList.remove("show");
@@ -158,10 +159,7 @@ TokenView.prototype = {
 	},
 
 	mouseMove: function(e) {
-		this.mouseMoveEvent.notify({
-			pageX: e.pageX,
-			pageY: e.pageY
-		});
+		this.mouseMoveEvent.notify({ pageX: e.pageX, pageY: e.pageY });
 		// Consume the event if it is not some type of input/control
 		if (!e.target.type) {
 			e = e || window.event;
@@ -174,10 +172,7 @@ TokenView.prototype = {
 	},
 
 	mouseDown: function(e) {
-		this.mouseDownEvent.notify({
-			pageX: e.pageX,
-			pageY: e.pageY
-		});
+		this.mouseDownEvent.notify({ pageX: e.pageX, pageY: e.pageY });
 		e = e || window.event;
 		pauseEvent(e);
 	},
@@ -192,9 +187,7 @@ TokenView.prototype = {
 	},
 
 	scaleChange: function() {
-		this.scaleChangeEvent.notify({
-			value: parseFloat(scaleValue.value)
-		});
+		this.scaleChangeEvent.notify({ value: parseFloat(scaleValue.value) });
 	},
 
 	updateScale: function() {
@@ -224,6 +217,12 @@ TokenView.prototype = {
 		});
 	},
 
+	selectBorder: function(e) {
+		this.selectBorderEvent.notify({
+			id: e.target.id
+		});
+	},
+
 	changeTokenSize: function(width, height) {
 		this.tokenWidth.value = width;
 		this.tokenHeight.value = height;
@@ -232,18 +231,11 @@ TokenView.prototype = {
 		this.render();
 	},
 
-	// @TODO: Move this to model?
 	// Dropdown border selection menu
 	openMenu: function() {
 		document.getElementById("droplabel").classList.toggle("show");
 		document.getElementById("droparrow").classList.toggle("show");
 		document.getElementById("dropdown-content").classList.toggle("show");
-	},
-
-	selectBorder: function(e) {
-		this.selectBorderEvent.notify({
-			id: e.target.id
-		});
 	},
 
 	changeBorder: function() {
@@ -292,6 +284,19 @@ TokenView.prototype = {
 		this.fileHoverEnd();
 	},
 
+	chooseFile: function(e) {
+		var tgt = e.target || window.event.srcElement, files = tgt.files;
+		if (FileReader && files && files.length) {
+			this.readImageFile(files[0]);
+		}
+		else {
+			// TODO: Fill in error handling here
+			// fallback -- perhaps submit the input to an iframe and temporarily store
+			// them on the server until the user's session ends.
+		}
+		this.hideFileDialog();
+	},
+
 	fileHoverStart: function(e) {
 		pauseEvent(e);
 		this.dropArea.classList.add('is-dragover');
@@ -307,19 +312,6 @@ TokenView.prototype = {
 			this.image.src = r.result;
 		}.bind(this);
 		r.readAsDataURL(f);
-	},
-
-	chooseFile: function(e) {
-		var tgt = e.target || window.event.srcElement, files = tgt.files;
-		if (FileReader && files && files.length) {
-			this.readImageFile(files[0]);
-		}
-		else {
-			// TODO: Fill in error handling here
-			// fallback -- perhaps submit the input to an iframe and temporarily store
-			// them on the server until the user's session ends.
-		}
-		this.hideFileDialog();
 	},
 
 	saveImage: function() {
