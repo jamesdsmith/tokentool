@@ -95,7 +95,6 @@ TokenView.prototype = {
 
     enable: function () {
 		window.addEventListener('resize', this.resizeCanvasHandler);
-		// @TODO: Investigate if this is causing the flicker at startup
 		window.addEventListener('load', this.resizeCanvasHandler);
 		window.addEventListener('mousemove', this.mouseMoveHandler);
 		this.canvas.addEventListener('mousedown', this.mouseDownHandler);
